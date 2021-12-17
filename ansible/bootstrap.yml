@@ -43,7 +43,8 @@
       ansible.posix.authorized_key:
         user: devops
         state: present
-        key: https://raw.githubusercontent.com/h3nnn4n/colosseum_infra/main/ansible/authorized_keys
+        key: "{{ lookup('file', 'authorized_keys') }}"
+        exclusive: True
 
     - name: Checkout colosseum
       ansible.builtin.git:
