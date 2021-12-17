@@ -20,7 +20,7 @@
         regexp: "{{ item.line_to_match }}"
         line: "{{ item.line_to_configure }}"
       with_items:
-        - { line_to_match: "maxmemory", line_to_configure: "maxmemory 512" }
+        - { line_to_match: "maxmemory", line_to_configure: "maxmemory 512MB" }
         - { line_to_match: "bind", line_to_configure: "bind 0.0.0.0" }
         - { line_to_match: "maxmemory-policy", line_to_configure: "maxmemory-policy allkeys-lru" }
         - { line_to_match: "maxmemory-samples", line_to_configure: "maxmemory-samples 10" }
