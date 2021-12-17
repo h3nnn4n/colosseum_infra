@@ -1,0 +1,6 @@
+---
+- name: Setup a webserver
+  gather_facts: false
+  hosts: webservers
+
+  # TODO
