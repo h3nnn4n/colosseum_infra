@@ -4,6 +4,10 @@
   hosts: redis
 
   tasks:
+    - name: Add redis ppa
+      ansible.builtin.apt_repository:
+        repo: 'ppa:chris-lea/redis-server'
+
     - name: Ensure Redis is present
       apt: pkg=redis-server state=latest
 
