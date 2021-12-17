@@ -24,8 +24,16 @@
         - { line_to_match: "bind", line_to_configure: "bind 0.0.0.0" }
         - { line_to_match: "maxmemory-policy", line_to_configure: "maxmemory-policy allkeys-lru" }
         - { line_to_match: "maxmemory-samples", line_to_configure: "maxmemory-samples 10" }
-        - { line_to_match: "requirepass", line_to_configure: "requirepass foobared" }
+        - { line_to_match: "requirepass", line_to_configure: "" }
         - { line_to_match: "protected-mode", line_to_configure: "protected-mode no" }
 
     - name: Ensure redis service is restarted
       service: name=redis state=restarted
+
+    - name: Ensure Redis ACL are set
+      become: yes
+      become_method: sudo
+      become_user: devops
+      ansible.builtin.shell: |
+        echo "ACL SETUSER {{ lookup('amazon.aws.aws_secret', 'colosseum_secrets.redis_user', nested=True) }} allkeys +@string +@set -SADD >{{ lookup('amazon.aws.aws_secret', 'colosseum_secrets.redis_password', nested=True) }}" | redis-cli
+        echo "CONFIG REWRITE" | redis-cli
