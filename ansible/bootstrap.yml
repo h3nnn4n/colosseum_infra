@@ -13,6 +13,7 @@
         pkg:
           - sudo
           - python3.10-full
+          - prometheus-node-exporter
         state: present
         update_cache: yes
         cache_valid_time: 3600
@@ -66,3 +67,6 @@
       become_user: devops
       vars:
         allow_world_readable_tmpfiles: true
+
+    - name: Ensure prometheus-node-exporter is started
+      service: name=prometheus-node-exporter state=started enabled=yes
