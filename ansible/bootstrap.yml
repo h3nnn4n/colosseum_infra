@@ -52,6 +52,11 @@
         regexp: '^(.*)PasswordAuthentication(.*)$'
         line: 'PasswordAuthentication no'
 
+    - name: Restart ssh
+      ansible.builtin.service:
+        name: sshd
+        state: restarted
+
     - name: Checkout colosseum
       ansible.builtin.git:
         repo: 'https://github.com/h3nnn4n/colosseum'
