@@ -57,18 +57,6 @@
         name: sshd
         state: restarted
 
-    - name: Checkout colosseum
-      ansible.builtin.git:
-        repo: 'https://github.com/h3nnn4n/colosseum'
-        dest: /opt/colosseum/
-        version: develop  # FIXME: Should be a release branch
-
-    - name: Checkout colosseum_website
-      ansible.builtin.git:
-        repo: 'https://github.com/h3nnn4n/colosseum_website'
-        dest: /opt/colosseum_website/
-        version: develop  # FIXME: Should be a release branch
-
     - name: Setup poetry
       ansible.builtin.shell: |
         python3.10 -m ensurepip

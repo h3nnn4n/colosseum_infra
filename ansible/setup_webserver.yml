@@ -3,4 +3,13 @@
   gather_facts: false
   hosts: webservers
 
-  # TODO
+  become: yes
+  become_method: sudo
+  become_user: devops
+
+  tasks:
+    - name: Checkout colosseum_website
+      ansible.builtin.git:
+        repo: 'https://github.com/h3nnn4n/colosseum_website'
+        dest: /opt/colosseum_website/
+        version: develop  # FIXME: Should be a release branch
