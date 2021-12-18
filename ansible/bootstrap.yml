@@ -46,6 +46,12 @@
         key: "{{ lookup('file', 'authorized_keys') }}"
         exclusive: True
 
+    - name: Ensure ssh login password is disabled
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^(.*)PasswordAuthentication(.*)$'
+        line: 'PasswordAuthentication no'
+
     - name: Checkout colosseum
       ansible.builtin.git:
         repo: 'https://github.com/h3nnn4n/colosseum'
