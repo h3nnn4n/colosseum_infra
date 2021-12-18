@@ -5,6 +5,11 @@ all:
         5.161.47.100:
           ansible_user: root
 
+    metrics:
+      hosts:
+        5.161.67.181:
+          ansible_user: root
+
     webservers:
       hosts:
         5.161.67.60:
