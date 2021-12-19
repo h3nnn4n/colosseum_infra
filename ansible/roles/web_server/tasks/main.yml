@@ -1,0 +1,30 @@
+---
+- block:
+  - name: Refresh apt and install base packages
+    apt:
+      pkg:
+        - nginx
+      state: present
+
+  - name: Checkout colosseum_website
+    ansible.builtin.git:
+      repo: 'https://github.com/h3nnn4n/colosseum_website'
+      dest: /home/devops/colosseum_website
+      version: develop  # FIXME: Should be a release branch
+
+  - name: Ensure Gunicorn is not running
+    ansible.builtin.command: pkill -f gunicorn
+    ignore_errors: yes
+
+  - name: Install dependencies
+    ansible.builtin.shell: |
+      cd /home/devops/colosseum_website/
+      /home/devops/.local/bin/poetry install
+
+  - name: Ensure Gunicorn is running
+    ansible.builtin.shell: |
+      poetry run gunicorn colosseum_website.wsgi --bind=unix:/home/user/app/colosseum_website/gunicorn.sock --preload --workers=5
+
+  become: yes
+  become_method: sudo
+  become_user: devops

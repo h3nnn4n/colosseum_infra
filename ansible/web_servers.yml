@@ -2,3 +2,4 @@
 - hosts: web_servers
   roles:
     - base
+    - web_server
