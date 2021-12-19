@@ -1,0 +1,4 @@
+---
+- hosts: colosseum_workers
+  roles:
+    - base
