@@ -1,5 +1,5 @@
 ---
 - hosts: colosseum_workers
   roles:
-    - base
+    - bootstrap
     - colosseum_worker

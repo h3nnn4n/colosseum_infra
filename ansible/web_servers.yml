@@ -1,5 +1,5 @@
 ---
 - hosts: web_servers
   roles:
-    - base
+    - bootstrap
     - web_server
