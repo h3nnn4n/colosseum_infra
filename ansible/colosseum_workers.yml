@@ -2,3 +2,4 @@
 - hosts: colosseum_workers
   roles:
     - base
+    - colosseum_worker

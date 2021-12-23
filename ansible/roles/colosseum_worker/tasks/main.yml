@@ -1,0 +1,29 @@
+---
+- block:
+  - name: Checkout colosseum
+    ansible.builtin.git:
+      repo: 'https://github.com/h3nnn4n/colosseum'
+      dest: /home/devops/colosseum
+      version: develop  # FIXME: Should be a release branch
+
+  - name: Ensure the workers are not running
+    ansible.builtin.command: pkill -f tournament_online
+    ignore_errors: yes
+
+  - name: Install project deps with Poetry
+    environment:
+      PATH: "{{ ansible_env.HOME }}/.poetry/bin:{{ ansible_env.PATH }}"
+    shell: "poetry install"
+    args:
+      chdir: "/home/devops/colosseum"
+
+  - name: Start workers
+    environment:
+      PATH: "{{ ansible_env.HOME }}/.poetry/bin:{{ ansible_env.PATH }}"
+    shell: "for i in `seq 3`; do sleep 1; while [[ true ]]; do; poetry run python tournament_online.py; done &; done"
+    args:
+      chdir: "/home/devops/colosseum"
+
+  become: yes
+  become_method: sudo
+  become_user: devops
