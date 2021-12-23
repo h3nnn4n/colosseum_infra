@@ -1,5 +1,7 @@
 ---
 - hosts: colosseum_workers
   roles:
-    - bootstrap
-    - colosseum_worker
+    - role: bootstrap
+      tags: ['bootstrap']
+    - role: colosseum_worker
+      tags: ['colosseum_worker']
