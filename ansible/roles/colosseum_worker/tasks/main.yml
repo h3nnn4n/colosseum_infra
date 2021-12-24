@@ -6,43 +6,22 @@
       dest: /home/devops/colosseum
       version: develop  # FIXME: Should be a release branch
 
-  - name: Ensure poetry dependencies are installed
-    package:
-      name: "{{ item }}"
-      state: present
-    become: true
-    with_items:
-      - python3-pip
-      - python3-venv
-
-  - name: Check if poetry is installed
-    command: "/home/devops/.local/bin/poetry"
-    register: poetry_cmd
-    changed_when: false
-    ignore_errors: true
-
-  - name: Download poetry installer
-    get_url:
-      url: https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py
-      dest: "/home/devops/install-poetry.py"
-      timeout: 20
-    when: poetry_cmd is failed
-
-  - name: Install poetry
-    command: "/home/devops/pyenv/shims/python3 /home/devops/install-poetry.py"
-    when: poetry_cmd is failed
-
   - name: Ensure the workers are not running
     ansible.builtin.command: pkill -f tournament_online
     ignore_errors: yes
+    become: true
+
+  - name: Ensure poetry is available
+    command: "/home/devops/pyenv/shims/python -m pip install poetry"
+    ignore_errors: yes
 
   - name: Install project deps with Poetry
-    shell: "python -m poetry install"
+    shell: "/home/devops/pyenv/shims/python3 -m poetry install"
     args:
       chdir: "/home/devops/colosseum"
 
   - name: Start workers
-    shell: "for i in `seq 3`; do sleep 1; while [[ true ]]; do; python -m poetry run python tournament_online.py; done &; done"
+    shell: "/home/devops/pyenv/shims/python -m poetry run python tournament_online.py"
     args:
       chdir: "/home/devops/colosseum"
 
