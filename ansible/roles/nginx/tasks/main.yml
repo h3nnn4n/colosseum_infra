@@ -32,4 +32,4 @@
     - /etc/nginx/sites-available/default
 
 - name: Generate and install certificates
-  command: certbot run --nginx --redirect --non-interactive --domain staging.colosseum.website --agree-tos --email colosseum@h3nnn4n.me
+  command: certbot run --nginx --redirect --non-interactive --expand --agree-tos --email colosseum@h3nnn4n.me --domain api.colosseum.website --domain www.colosseum.website --domain colosseum.website
