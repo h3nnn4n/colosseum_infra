@@ -37,7 +37,19 @@
     become: yes
 
   - name: Ensure Gunicorn is running
-    shell: "/home/devops/pyenv/shims/python3 -m poetry run gunicorn colosseum_website.wsgi --bind=unix:/home/devops/colosseum_website/gunicorn.sock --preload --workers=5 &"
+    shell: |
+      DJANGO_SETTINGS_MODULE=colosseum_website.settings.production \
+      /home/devops/pyenv/shims/python3 -m poetry run gunicorn \
+        colosseum_website.wsgi \
+        --bind=unix:/home/devops/colosseum_website/gunicorn.sock \
+        --keep-alive 10 \
+        --access-logfile access.log \
+        --log-level info \
+        --log-file server.log \
+        --preload \
+        --timeout 30 \
+        --worker-class sync \
+        --workers=5 &
     args:
       executable: /bin/bash
       chdir: /home/devops/colosseum_website
