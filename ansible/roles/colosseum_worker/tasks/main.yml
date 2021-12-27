@@ -26,10 +26,11 @@
 
   - name: Stop all workers
     shell: |
-      pkill tournament_online || true
+      pkill -f tournament_online
     args:
       executable: /bin/bash
       chdir: /home/devops/colosseum
+    become: yes
 
   - name: Start worker
     shell: |
