@@ -12,26 +12,12 @@
       - libmagic1  # For mime detection
       - neovim
       - prometheus-node-exporter
-      #- python-is-python3
-      #- python3.10-full
       - sudo
       - python-apt
       - python3-apt
     state: present
     update_cache: yes
     cache_valid_time: 3600
-
-#- name: Ensure python3 is python3.10
-  #ansible.builtin.command: "update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 10"
-
-#- name: Ensure python-apt is present
-  #apt:
-    #pkg:
-      #- python-apt
-      #- python3-apt
-    #state: present
-    #update_cache: yes
-    #cache_valid_time: 3600
 
 - name: Make sure we have a 'wheel' group
   group:
