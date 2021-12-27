@@ -7,12 +7,12 @@ all:
 
     celery_workers:
       hosts:
-        5.161.67.60:
+        5.161.59.76:
           ansible_user: root
 
     colosseum_workers:
       hosts:
-        5.161.67.60:
+        5.161.59.76:
           ansible_user: root
 
     metrics:
