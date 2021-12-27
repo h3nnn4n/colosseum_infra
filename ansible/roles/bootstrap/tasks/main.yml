@@ -43,10 +43,13 @@
 
 - name: Set authorized keys
   authorized_key:
-    user: devops
+    user: "{{ item }}"
     state: present
     key: "{{ lookup('file', 'authorized_keys') }}"
     exclusive: True
+  with_items:
+    - root
+    - devops
 
 - name: Ensure ssh login password is disabled
   lineinfile:
