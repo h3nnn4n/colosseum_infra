@@ -34,7 +34,7 @@
 - name: Generate and install certificates
   command: certbot run --nginx --redirect --non-interactive --expand --agree-tos --email colosseum@h3nnn4n.me --domain api.colosseum.website --domain www.colosseum.website --domain colosseum.website
 
-- name: Restart service httpd, in all cases
+- name: Reload nginx
   service:
     name: nginx
-    state: restarted
+    state: reloaded
