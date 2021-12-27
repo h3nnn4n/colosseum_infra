@@ -42,7 +42,7 @@
     shell: /bin/bash
 
 - name: Set authorized keys
-  ansible.posix.authorized_key:
+  authorized_key:
     user: devops
     state: present
     key: "{{ lookup('file', 'authorized_keys') }}"
