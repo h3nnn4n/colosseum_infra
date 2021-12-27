@@ -1,30 +1,47 @@
 ---
 - block:
-  - name: Refresh apt and install base packages
+  - name: Ensure system packages deps are present
     apt:
       pkg:
-        - nginx
+        - libpq-dev
       state: present
+    become: true
+    become_method: sudo
+    become_user: root
 
   - name: Checkout colosseum_website
-    ansible.builtin.git:
-      repo: 'https://github.com/h3nnn4n/colosseum_website'
+    git:
+      repo: https://github.com/h3nnn4n/colosseum_website
       dest: /home/devops/colosseum_website
       version: develop  # FIXME: Should be a release branch
 
-  - name: Ensure Gunicorn is not running
-    ansible.builtin.command: pkill -f gunicorn
-    ignore_errors: yes
+  - name: Ensure poetry is available
+    command: /home/devops/pyenv/shims/python -m pip install poetry
 
-  - name: Install dependencies
-    ansible.builtin.shell: |
-      cd /home/devops/colosseum_website/
-      /home/devops/.local/bin/poetry install
+  - name: Install project deps with Poetry
+    command: /home/devops/pyenv/shims/python3 -m poetry install
+    args:
+      chdir: /home/devops/colosseum_website
+
+  - name: Decrypt and copy secret file
+    copy:
+      src: dot_env
+      dest: /home/devops/colosseum_website/.env
+      decrypt: true
+      owner: devops
+      group: devops
+      mode: '0400'  # Read only to owner
+
+  - name: Ensure Gunicorn is not running
+    command: "pkill -f gunicorn"
+    become: yes
 
   - name: Ensure Gunicorn is running
-    ansible.builtin.shell: |
-      poetry run gunicorn colosseum_website.wsgi --bind=unix:/home/user/app/colosseum_website/gunicorn.sock --preload --workers=5
+    shell: "/home/devops/pyenv/shims/python3 -m poetry run gunicorn colosseum_website.wsgi --bind=unix:/home/devops/colosseum_website/gunicorn.sock --preload --workers=5 &"
+    args:
+      executable: /bin/bash
+      chdir: /home/devops/colosseum_website
 
   become: yes
-  become_method: sudo
+  become_method: su
   become_user: devops
