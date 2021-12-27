@@ -34,8 +34,8 @@
 
   - name: Start worker
     shell: |
-      /home/devops/pyenv/shims/python3 -m poetry run python3 tournament_online.py --loop &
-      /home/devops/pyenv/shims/python3 -m poetry run python3 tournament_online.py --loop &
+      while [[ true ]]; do /home/devops/pyenv/shims/python3 -m poetry run python3 tournament_online.py; done &
+      while [[ true ]]; do /home/devops/pyenv/shims/python3 -m poetry run python3 tournament_online.py; done &
     args:
       executable: /bin/bash
       chdir: /home/devops/colosseum
