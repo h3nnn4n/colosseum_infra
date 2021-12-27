@@ -3,6 +3,7 @@
   roles:
     - role: bootstrap
       tags: ['bootstrap']
+
     - role: staticdev.pyenv
       pyenv_path: "/home/devops/pyenv"
       pyenv_owner: "devops"
@@ -11,5 +12,6 @@
       pyenv_python_versions:
         - 3.10.0
       tags: ['python']
+
     - role: colosseum_worker
       tags: ['colosseum_worker']
