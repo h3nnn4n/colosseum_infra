@@ -1,0 +1,35 @@
+---
+- name: Ensure system packages deps are present
+  apt:
+    pkg:
+      - nginx
+      - certbot
+      - python3-certbot-nginx
+    state: present
+
+- name: Setup nginx colosseum_site
+  copy:
+    src: colosseum_site
+    dest: /etc/nginx/sites-available/colosseum_site
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable colosseum_site
+  file:
+    src: /etc/nginx/sites-available/colosseum_site
+    dest: /etc/nginx/sites-enabled/colosseum_site
+    owner: root
+    group: root
+    state: link
+
+- name: Disable default nginx site
+  file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+    - /etc/nginx/sites-enabled/default
+    - /etc/nginx/sites-available/default
+
+- name: Generate and install certificates
+  command: certbot run --nginx --redirect --non-interactive --domain staging.colosseum.website --agree-tos --email colosseum@h3nnn4n.me
