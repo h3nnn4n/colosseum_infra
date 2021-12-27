@@ -1,0 +1,44 @@
+---
+- block:
+  - name: Checkout colosseum
+    ansible.builtin.git:
+      repo: 'https://github.com/h3nnn4n/colosseum'
+      dest: /home/devops/colosseum
+      version: develop  # FIXME: Should be a release branch
+
+  - name: Ensure poetry is available
+    command: "/home/devops/pyenv/shims/python -m pip install poetry"
+    ignore_errors: yes
+
+  - name: Install project deps with Poetry
+    shell: "/home/devops/pyenv/shims/python3 -m poetry install"
+    args:
+      chdir: "/home/devops/colosseum"
+
+  - name: Decrypt and copy secret file
+    copy:
+      src: dot_env
+      dest: /home/devops/colosseum/.env
+      decrypt: true
+      owner: devops
+      group: devops
+      mode: '0400'  # Read only to owner
+
+  - name: Stop all workers
+    shell: |
+      pkill tournament_online || true
+    args:
+      executable: /bin/bash
+      chdir: /home/devops/colosseum
+
+  - name: Start worker
+    shell: |
+      /home/devops/pyenv/shims/python3 -m poetry run python3 tournament_online.py --loop &
+      /home/devops/pyenv/shims/python3 -m poetry run python3 tournament_online.py --loop &
+    args:
+      executable: /bin/bash
+      chdir: /home/devops/colosseum
+
+  become: true
+  become_method: su
+  become_user: devops

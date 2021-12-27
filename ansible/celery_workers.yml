@@ -1,4 +1,4 @@
 ---
 - hosts: celery_workers
   roles:
-    - base
+    - bootstrap
