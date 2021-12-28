@@ -32,6 +32,22 @@
       group: devops
       mode: '0400'  # Read only to owner
 
+  - name: Run django migrations
+    shell: |
+      DJANGO_SETTINGS_MODULE=colosseum_website.settings.production \
+      /home/devops/pyenv/shims/python3 -m poetry run python3 manage.py migrate
+    args:
+      executable: /bin/bash
+      chdir: /home/devops/colosseum_website
+
+  - name: Run django collectstatic
+    shell: |
+      DJANGO_SETTINGS_MODULE=colosseum_website.settings.production \
+      /home/devops/pyenv/shims/python3 -m poetry run python3 manage.py collectstatic
+    args:
+      executable: /bin/bash
+      chdir: /home/devops/colosseum_website
+
   - name: Ensure Gunicorn is not running
     command: "pkill -f gunicorn"
     become: yes
