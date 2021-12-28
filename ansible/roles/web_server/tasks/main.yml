@@ -43,7 +43,7 @@
   - name: Run django collectstatic
     shell: |
       DJANGO_SETTINGS_MODULE=colosseum_website.settings.production \
-      /home/devops/pyenv/shims/python3 -m poetry run python3 manage.py collectstatic
+      /home/devops/pyenv/shims/python3 -m poetry run python3 manage.py collectstatic --no-input
     args:
       executable: /bin/bash
       chdir: /home/devops/colosseum_website
