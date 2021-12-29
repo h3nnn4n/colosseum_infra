@@ -10,11 +10,12 @@
       - htop
       - liblzma-dev  # Necessary to handle xz files
       - libmagic1  # For mime detection
+      - libpq-dev
       - neovim
       - prometheus-node-exporter
-      - sudo
       - python-apt
       - python3-apt
+      - sudo
     state: present
     update_cache: yes
     cache_valid_time: 3600
