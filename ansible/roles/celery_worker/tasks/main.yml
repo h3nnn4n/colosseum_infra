@@ -1,0 +1,44 @@
+---
+- block:
+  - name: Checkout colosseum
+    git:
+      repo: https://github.com/h3nnn4n/colosseum_website
+      dest: /home/devops/colosseum_website
+      version: production
+
+  - name: Ensure poetry is available
+    command: /home/devops/pyenv/shims/python -m pip install poetry
+    ignore_errors: yes
+
+  - name: Install project deps with Poetry
+    shell: /home/devops/pyenv/shims/python3 -m poetry install
+    args:
+      chdir: /home/devops/colosseum_website
+
+  - name: Decrypt and copy secret file
+    copy:
+      src: dot_env
+      dest: /home/devops/colosseum_website/.env
+      decrypt: true
+      owner: devops
+      group: devops
+      mode: '0400'  # Read only to owner
+
+  - name: Stop all workers
+    shell: |
+      pkill -f celery
+    args:
+      executable: /bin/bash
+      chdir: /home/devops/colosseum_website
+    become: yes
+
+  - name: Start worker
+    command: |
+      /home/devops/pyenv/shims/python3 -m poetry run celery --app app worker --loglevel=INFO -B
+    args:
+      executable: /bin/bash
+      chdir: /home/devops/colosseum_website
+
+  become: true
+  become_method: su
+  become_user: devops

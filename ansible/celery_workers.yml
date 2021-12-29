@@ -1,4 +1,17 @@
 ---
 - hosts: celery_workers
   roles:
-    - bootstrap
+    - role: bootstrap
+      tags: ['bootstrap']
+
+    - role: staticdev.pyenv
+      pyenv_path: "/home/devops/pyenv"
+      pyenv_owner: "devops"
+      pyenv_global:
+        - 3.10.0
+      pyenv_python_versions:
+        - 3.10.0
+      tags: ['python']
+
+    - role: celery_worker
+      tags: ['celery_worker']
