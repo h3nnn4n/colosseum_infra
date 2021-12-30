@@ -4,7 +4,7 @@
     git:
       repo: https://github.com/h3nnn4n/colosseum_website
       dest: /home/devops/colosseum_website
-      version: production
+      version: setup_celery # FIXME: Should be production
 
   - name: Ensure poetry is available
     command: /home/devops/pyenv/shims/python -m pip install poetry
@@ -34,9 +34,8 @@
 
   - name: Start worker
     command: |
-      /home/devops/pyenv/shims/python3 -m poetry run celery --app app worker --loglevel=INFO -B
+      /home/devops/pyenv/shims/python3 -m poetry run celery --app app worker --loglevel=INFO --logfile=celery.log--beat --detach
     args:
-      executable: /bin/bash
       chdir: /home/devops/colosseum_website
 
   become: true
