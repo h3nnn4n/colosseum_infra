@@ -26,7 +26,7 @@
 
   - name: Stop all workers
     shell: |
-      pkill -f tournament_online
+      pgrep tournament_online && pkill -f tournament_online || true
     args:
       executable: /bin/bash
       chdir: /home/devops/colosseum

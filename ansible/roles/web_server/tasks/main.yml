@@ -49,7 +49,11 @@
       chdir: /home/devops/colosseum_website
 
   - name: Ensure Gunicorn is not running
-    command: "pkill -f gunicorn"
+    shell: |
+      pgrep gunicorn && pkill -f gunicorn || true
+    args:
+      executable: /bin/bash
+      chdir: /home/devops/colosseum_website
     become: yes
 
   - name: Ensure Gunicorn is running
