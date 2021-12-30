@@ -26,7 +26,7 @@
 
   - name: Stop all workers
     shell: |
-      pkill -f celery
+      pgrep celery && pkill -f celery || true
     args:
       executable: /bin/bash
       chdir: /home/devops/colosseum_website
