@@ -4,7 +4,7 @@
     git:
       repo: https://github.com/h3nnn4n/colosseum_website
       dest: /home/devops/colosseum_website
-      version: setup_celery # FIXME: Should be production
+      version: production
 
   - name: Ensure poetry is available
     command: /home/devops/pyenv/shims/python -m pip install poetry
