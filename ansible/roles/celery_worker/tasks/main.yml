@@ -34,7 +34,7 @@
 
   - name: Start worker
     command: |
-      /home/devops/pyenv/shims/python3 -m poetry run celery --app app worker --loglevel=INFO --logfile=celery.log--beat --detach
+      /home/devops/pyenv/shims/python3 -m poetry run celery --app app worker --loglevel=INFO --logfile=celery.log --beat --detach
     args:
       chdir: /home/devops/colosseum_website
 
