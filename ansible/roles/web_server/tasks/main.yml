@@ -50,7 +50,7 @@
 
   - name: Ensure Gunicorn is not running
     shell: |
-      pgrep --full --list-name bin/gunicorn && pkill --full bin/gunicorn || true
+      pgrep --full --list-name "poetry.*gunicorn" && pkill --full "poetry.*gunicorn" || true
     args:
       executable: /bin/bash
       chdir: /home/devops/colosseum_website
