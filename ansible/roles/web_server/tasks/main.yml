@@ -48,15 +48,10 @@
       executable: /bin/bash
       chdir: /home/devops/colosseum_website
 
-  - name: Check if gunicorn is running
-    command: |
-      pgrep --full gunicorn
-    register: result
-
   - name: Stop gunicorn
     command: |
       pkill --full gunicorn
-    when: result.stdout | length > 0
+    ignore_errors: true
 
   - name: Ensure Gunicorn is running
     shell: |

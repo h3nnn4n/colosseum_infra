@@ -25,12 +25,9 @@
       mode: '0400'  # Read only to owner
 
   - name: Stop all workers
-    shell: |
-      pkill -f tournament_online || true
-    args:
-      executable: /bin/bash
-      chdir: /home/devops/colosseum
-    become: yes
+    command: |
+      pkill -f tournament_online
+    ignore_errors: true
 
   - name: Start worker
     shell: |

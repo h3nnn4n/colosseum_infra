@@ -24,15 +24,10 @@
       group: devops
       mode: '0400'  # Read only to owner
 
-  - name: Check if celery is running
-    command: |
-      pgrep --full celery
-    register: result
-
   - name: Stop celery
     command: |
       pkill --full celery
-    when: result.stdout | length > 0
+    ignore_errors: true
 
   - name: Start celery
     command: |
