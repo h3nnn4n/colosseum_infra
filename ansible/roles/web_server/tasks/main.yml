@@ -48,7 +48,7 @@
       executable: /bin/bash
       chdir: /home/devops/colosseum_website
 
-  - name: Ensure Gunicorn is not running
+  - name: Stop all workers
     shell: |
       pkill --full "poetry.*gunicorn" || true
     args:
@@ -56,7 +56,7 @@
       chdir: /home/devops/colosseum_website
     become: yes
 
-  - name: Ensure Gunicorn is running
+  - name: Start worker
     shell: |
       DJANGO_SETTINGS_MODULE=colosseum_website.settings.production \
       /home/devops/pyenv/shims/python3 -m poetry run gunicorn \
