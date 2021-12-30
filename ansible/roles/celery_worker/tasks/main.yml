@@ -24,15 +24,17 @@
       group: devops
       mode: '0400'  # Read only to owner
 
-  - name: Stop all workers
-    shell: |
-      pkill -f celery || true
-    args:
-      executable: /bin/bash
-      chdir: /home/devops/colosseum_website
-    become: yes
+  - name: Check if celery is running
+    command: |
+      pgrep --full celery
+    register: result
 
-  - name: Start worker
+  - name: Stop celery
+    command: |
+      pkill --full celery
+    when: result.stdout | length > 0
+
+  - name: Start celery
     command: |
       /home/devops/pyenv/shims/python3 -m poetry run celery --app app worker --loglevel=INFO --logfile=celery.log --beat --detach
     args:
