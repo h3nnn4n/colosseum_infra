@@ -1,0 +1,63 @@
+---
+- block:
+  - name: Ensure loki group exists
+    group:
+      name: loki
+      state: present
+
+  - name: Ensure loki user exists
+    user:
+      name: loki
+      shell: /bin/bash
+      groups: loki
+
+  - name: Ensure loki directory exists
+    file:
+      path: /mnt/metrics_volume/loki/
+      state: directory
+      owner: loki
+      group: loki
+      mode: '0755'
+
+  - name: Download loki
+    get_url:
+      url: https://github.com/grafana/loki/releases/download/v2.4.2/loki-linux-amd64.zip
+      dest: /mnt/metrics_volume/loki/loki-linux-amd64.zip
+      owner: loki
+      group: loki
+      mode: '0700'
+
+  - name: Extract loki
+    unarchive:
+      src: /mnt/metrics_volume/loki/loki-linux-amd64.zip
+      dest: /mnt/metrics_volume/loki/
+      remote_src: yes
+      owner: loki
+      group: loki
+      mode: '0400'  # Read-only to owner
+
+  - name: Decrypt and copy settings file file
+    copy:
+      src: loki_config.yml
+      dest: /mnt/metrics_volume/loki/loki_config.yml
+      decrypt: true
+      owner: loki
+      group: loki
+      mode: '0400'  # Read-only to owner
+
+  - name: Stop loki
+    command: |
+      pkill --full loki
+    ignore_errors: true
+
+  - name: Ensure loki is running
+    shell: |
+      ./loki-linux-amd64 -config.file=loki_config.yml &
+    args:
+      executable: /bin/bash
+      chdir: /mnt/metrics_volume/loki/
+    become_user: loki
+
+  become: yes
+  become_method: sudo
+  become_user: root
