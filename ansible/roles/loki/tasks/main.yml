@@ -25,7 +25,7 @@
       dest: /mnt/metrics_volume/loki/loki-linux-amd64.zip
       owner: loki
       group: loki
-      mode: '0700'
+      mode: '0400'  # Read-only to owner
 
   - name: Extract loki
     unarchive:
@@ -34,7 +34,7 @@
       remote_src: yes
       owner: loki
       group: loki
-      mode: '0400'  # Read-only to owner
+      mode: '0700'
 
   - name: Decrypt and copy settings file file
     copy:
@@ -52,10 +52,16 @@
 
   - name: Ensure loki is running
     shell: |
-      ./loki-linux-amd64 -config.file=loki_config.yml &
+      /mnt/metrics_volume/loki/loki-linux-amd64 \
+      -config.file=/mnt/metrics_volume/loki/loki_config.yml \
+       >> /mnt/metrics_volume/loki/loki_stdout.log \
+      2>> /mnt/metrics_volume/loki/loki_stderr.log \
+      &
     args:
       executable: /bin/bash
       chdir: /mnt/metrics_volume/loki/
+    become: yes
+    become_method: sudo
     become_user: loki
 
   become: yes
