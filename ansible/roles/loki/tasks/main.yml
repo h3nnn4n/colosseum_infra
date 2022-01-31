@@ -61,7 +61,7 @@
       executable: /bin/bash
       chdir: /mnt/metrics_volume/loki/
     become: yes
-    become_method: sudo
+    become_method: su
     become_user: loki
 
   become: yes
