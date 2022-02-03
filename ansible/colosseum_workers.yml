@@ -13,5 +13,8 @@
         - 3.10.0
       tags: ['python']
 
+    - role: docker
+      tags: ['colosseum_worker']
+
     - role: colosseum_worker
       tags: ['colosseum_worker']

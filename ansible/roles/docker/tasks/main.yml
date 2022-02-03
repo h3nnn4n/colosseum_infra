@@ -1,0 +1,47 @@
+---
+- block:
+  - name: Ensure packages are present
+    apt:
+      pkg:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+      state: present
+      update_cache: yes
+
+  - name: Ensure docker GPG key is present
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: Ensure docker repository is present
+    apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu bionic stable
+      state: present
+
+  - name: Ensure docker is installed
+    apt:
+      pkg:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+      state: present
+      update_cache: yes
+
+  - name: Ensure docker daemon is running
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: Ensure devops user can access docker
+    user:
+      name: devops
+      groups: docker
+      append: yes
+
+  become: yes
+  become_method: sudo
+  become_user: root
