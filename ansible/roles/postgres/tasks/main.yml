@@ -14,4 +14,4 @@
     dest: /etc/postgresql/12/pg_hba.conf
     owner: postgres
     group: postgres
-    mode: '0640'  # Read-only to owner
+    mode: '0640'  # Read-write to owner, read-only to group
