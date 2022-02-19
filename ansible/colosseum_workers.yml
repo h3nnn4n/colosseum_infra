@@ -5,7 +5,7 @@
       tags: ['bootstrap']
 
     - role: staticdev.pyenv
-      pyenv_path: "/home/devops/pyenv"
+      pyenv_path: "{{ install_folder }}/pyenv"
       pyenv_owner: "devops"
       pyenv_global:
         - 3.10.0

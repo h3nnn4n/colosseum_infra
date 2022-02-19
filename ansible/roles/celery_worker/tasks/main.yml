@@ -3,22 +3,22 @@
   - name: Checkout colosseum
     git:
       repo: https://github.com/h3nnn4n/colosseum_website
-      dest: /home/devops/colosseum_website
+      dest: "{{ install_folder }}/colosseum_website"
       version: production
 
   - name: Ensure poetry is available
-    command: /home/devops/pyenv/shims/python -m pip install poetry
+    command: "{{ install_folder }}/pyenv/shims/python -m pip install poetry"
     ignore_errors: yes
 
   - name: Install project deps with Poetry
-    shell: /home/devops/pyenv/shims/python3 -m poetry install
+    shell: "{{ install_folder }}/pyenv/shims/python3 -m poetry install"
     args:
-      chdir: /home/devops/colosseum_website
+      chdir: "{{ install_folder }}/colosseum_website"
 
   - name: Decrypt and copy secret file
     copy:
       src: dot_env
-      dest: /home/devops/colosseum_website/.env
+      dest: "{{ install_folder }}/colosseum_website/.env"
       decrypt: true
       owner: devops
       group: devops
@@ -31,9 +31,9 @@
 
   - name: Start celery
     command: |
-      /home/devops/pyenv/shims/python3 -m poetry run celery --app app worker --loglevel=INFO --logfile=celery.log --beat --detach
+      {{ install_folder }}/pyenv/shims/python3 -m poetry run celery --app app worker --loglevel=INFO --logfile=celery.log --beat --detach
     args:
-      chdir: /home/devops/colosseum_website
+      chdir: "{{ install_folder }}/colosseum_website"
 
   become: true
   become_method: su
