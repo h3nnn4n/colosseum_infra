@@ -15,3 +15,13 @@
     owner: postgres
     group: postgres
     mode: '0640'  # Read-write to owner, read-only to group
+
+- name: Ensure postgres is enabled
+  service:
+    name: postgresql
+    enabled: yes
+
+- name: Ensure postgres is running
+  service:
+    name: postgresql
+    state: started
