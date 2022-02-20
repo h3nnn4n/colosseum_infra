@@ -4,11 +4,12 @@
     pkg:
       - postgresql
       - libpq-dev
+      - python3-psycopg2
     state: present
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Decrypt and copy settings file file
+- name: Copy pg hba settings
   copy:
     src: pg_hba.conf
     dest: /etc/postgresql/12/pg_hba.conf
@@ -25,3 +26,28 @@
   service:
     name: postgresql
     state: started
+
+- name: Create app database
+  postgresql_db:
+    state: present
+    name: "{{ vault_postgres_database }}"
+  become: yes
+  become_user: postgres
+
+- name: Create db user
+  postgresql_user:
+    state: present
+    name: "{{ vault_postgres_user }}"
+    password: "{{ vault_postgres_password }}"
+  become: yes
+  become_user: postgres
+
+- name: Grant db user access to app db
+  postgresql_privs:
+    type: database
+    database: "{{ vault_postgres_database }}"
+    roles: "{{ vault_postgres_user }}"
+    grant_option: no
+    privs: all
+  become: yes
+  become_user: postgres
