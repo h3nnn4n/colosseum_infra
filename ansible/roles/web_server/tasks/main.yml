@@ -23,11 +23,10 @@
     args:
       chdir: "{{ install_folder }}/colosseum_website"
 
-  - name: Decrypt and copy secret file
-    copy:
+  - name: Setup .env file
+    template:
       src: dot_env
       dest: "{{ install_folder }}/colosseum_website/.env"
-      decrypt: true
       owner: devops
       group: devops
       mode: '0400'  # Read only to owner
