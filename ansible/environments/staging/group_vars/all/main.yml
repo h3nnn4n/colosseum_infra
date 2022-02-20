@@ -1,2 +1,3 @@
 ---
-base_url: https://staging.colosseum.website/
+base_domain: staging.colosseum.website
+base_url: https://{{ base_domain }}/

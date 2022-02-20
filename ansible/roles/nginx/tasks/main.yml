@@ -32,7 +32,7 @@
     - /etc/nginx/sites-available/default
 
 - name: Generate and install certificates
-  command: certbot run --nginx --redirect --non-interactive --expand --agree-tos --email colosseum@h3nnn4n.me --domain api.colosseum.website --domain www.colosseum.website --domain colosseum.website --domain staging.colosseum.website
+  command: certbot run --nginx --redirect --non-interactive --expand --agree-tos --email colosseum@h3nnn4n.me --domain {{ base_domain }}
 
 - name: Reload nginx
   service:
