@@ -19,11 +19,15 @@ server {
 }
 
 server {
+    if ($host = colosseum.website) {
+        return 301 https://$host$request_uri;
+    }
+
     if ($host = www.colosseum.website) {
         return 301 https://$host$request_uri;
     }
 
-    if ($host = colosseum.website) {
+    if ($host = www2.colosseum.website) {
         return 301 https://$host$request_uri;
     }
 
@@ -31,7 +35,7 @@ server {
         return 301 https://$host$request_uri;
     }
 
-    if ($host = www2.colosseum.website) {
+    if ($host = staging.colosseum.website) {
         return 301 https://$host$request_uri;
     }
 

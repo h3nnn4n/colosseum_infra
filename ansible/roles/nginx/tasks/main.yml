@@ -8,7 +8,7 @@
     state: present
 
 - name: Setup nginx colosseum_site
-  copy:
+  template:
     src: colosseum_site
     dest: /etc/nginx/sites-available/colosseum_site
     owner: root
@@ -32,7 +32,7 @@
     - /etc/nginx/sites-available/default
 
 - name: Generate and install certificates
-  command: certbot run --nginx --redirect --non-interactive --expand --agree-tos --email colosseum@h3nnn4n.me --domain api.colosseum.website --domain www.colosseum.website --domain colosseum.website
+  command: certbot run --nginx --redirect --non-interactive --expand --agree-tos --email colosseum@h3nnn4n.me --domain api.colosseum.website --domain www.colosseum.website --domain colosseum.website --domain staging.colosseum.website
 
 - name: Reload nginx
   service:
