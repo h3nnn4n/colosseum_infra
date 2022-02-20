@@ -1,0 +1,27 @@
+---
+- name: Refresh apt and install base packages
+  apt:
+    pkg:
+      - postgresql
+      - libpq-dev
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Decrypt and copy settings file file
+  copy:
+    src: pg_hba.conf
+    dest: /etc/postgresql/12/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: '0640'  # Read-write to owner, read-only to group
+
+- name: Ensure postgres is enabled
+  service:
+    name: postgresql
+    enabled: yes
+
+- name: Ensure postgres is running
+  service:
+    name: postgresql
+    state: started
