@@ -38,7 +38,7 @@
       {{ install_folder }}/pyenv/shims/python3 -m poetry run python3 manage.py migrate
     args:
       executable: /bin/bash
-      chdir: {{ install_folder }}/colosseum_website
+      chdir: "{{ install_folder }}/colosseum_website"
 
   - name: Run django collectstatic
     shell: |
