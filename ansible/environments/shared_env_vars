@@ -1,1 +1,2 @@
 install_folder: /opt/colosseum/
+python_version: 3.10.0

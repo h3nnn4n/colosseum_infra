@@ -8,9 +8,9 @@
       pyenv_path: "{{ install_folder }}/pyenv"
       pyenv_owner: "devops"
       pyenv_global:
-        - 3.10.0
+        - "{{ python_version }}"
       pyenv_python_versions:
-        - 3.10.0
+        - "{{ python_version }}"
       tags: ['python']
 
     - role: celery_worker
