@@ -13,7 +13,7 @@
     git:
       repo: https://github.com/h3nnn4n/colosseum_website
       dest: "{{ install_folder }}/colosseum_website"
-      version: production
+      version: "{{ deploy_branch }}"
 
   - name: Ensure poetry is available
     command: "{{ install_folder }}/pyenv/shims/python -m pip install poetry"

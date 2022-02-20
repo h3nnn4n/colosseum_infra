@@ -1,3 +1,4 @@
 ---
 base_domain: staging.colosseum.website
 base_url: https://{{ base_domain }}/
+deploy_branch: develop
