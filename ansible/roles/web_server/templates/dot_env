@@ -5,7 +5,7 @@ AWS_ACCESS_KEY_ID={{ vault_aws_access_key_id }}
 AWS_SECRET_ACCESS_KEY={{ vault_aws_secret_access_key }}
 AWS_STORAGE_BUCKET_NAME={{ vault_aws_storage_bucket_name }}
 
-DATABASE_URL=
+DATABASE_URL=postgres://{{ vault_postgres_user }}:{{ vault_postgres_password }}@{{ vault_postgres_url }}:{{ vault_postgres_port }}/{{ vault_postgres_database }}
 
 REDIS_URL=redis://{{ vault_redis_user }}:{{ vault_redis_password }}@{{ vault_redis_url }}:{{ vault_redis_port }}/{{ vault_redis_db }}
 CELERY_REDIS_URL=redis://{{ vault_redis_user }}:{{ vault_redis_password }}@{{ vault_redis_url }}:{{ vault_redis_port }}/{{ vault_redis_celery_db }}
