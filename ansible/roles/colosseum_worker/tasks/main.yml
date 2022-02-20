@@ -15,8 +15,8 @@
     args:
       chdir: "{{ install_folder }}/colosseum"
 
-  - name: Decrypt and copy secret file
-    copy:
+  - name: Setup dot env
+    template:
       src: dot_env
       dest: "{{ install_folder }}/colosseum/.env"
       decrypt: true
