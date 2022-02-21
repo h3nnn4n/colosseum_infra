@@ -47,28 +47,20 @@
       executable: /bin/bash
       chdir: "{{ install_folder }}/colosseum_website"
 
-  - name: Stop gunicorn
-    command: |
-      pkill --full gunicorn
-    ignore_errors: true
+  - name: Create gunicorn service
+    template:
+      src: gunicorn.service
+      dest: /etc/systemd/system/gunicorn.service
+      owner: root
+      group: root
+    become: yes
+    become_user: root
 
-  - name: Ensure Gunicorn is running
-    shell: |
-      DJANGO_SETTINGS_MODULE=colosseum_website.settings.production \
-      {{ install_folder }}/pyenv/shims/python3 -m poetry run gunicorn \
-        colosseum_website.wsgi \
-        --bind=unix:{{ install_folder }}/colosseum_website/gunicorn.sock \
-        --keep-alive 10 \
-        --access-logfile access.log \
-        --log-level info \
-        --log-file server.log \
-        --preload \
-        --timeout 30 \
-        --worker-class sync \
-        --workers 5 > stuff.log &
-    args:
-      executable: /bin/bash
-      chdir: "{{ install_folder }}/colosseum_website"
+  - name: Ensure gunicorn is enabled and restarted
+    service:
+      name: gunicorn.service
+      enabled: yes
+      state: restarted
 
   become: yes
   become_method: su
