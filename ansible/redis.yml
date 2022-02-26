@@ -1,11 +1,10 @@
 ---
 - name: Setup redis
-  gather_facts: false
   hosts: redis
 
   tasks:
     - name: Add redis ppa
-      ansible.builtin.apt_repository:
+      apt_repository:
         repo: 'ppa:chris-lea/redis-server'
 
     - name: Ensure Redis is present
@@ -31,10 +30,11 @@
       service: name=redis state=restarted
 
     - name: Ensure Redis ACL are set
+      shell: |
+        echo "ACL SETUSER {{ vault_redis_user }} allkeys allcommands on >{{ vault_redis_password }}" | redis-cli
+        echo "ACL SETUSER default off" | redis-cli
+        echo "CONFIG REWRITE" | redis-cli
+
       become: yes
       become_method: sudo
       become_user: devops
-      ansible.builtin.shell: |
-        echo "ACL SETUSER {{ lookup('amazon.aws.aws_secret', 'colosseum_secrets.redis_user', nested=True) }} allkeys allcommands on >{{ lookup('amazon.aws.aws_secret', 'colosseum_secrets.redis_password', nested=True) }}" | redis-cli
-        echo "ACL SETUSER default off" | redis-cli
-        echo "CONFIG REWRITE" | redis-cli

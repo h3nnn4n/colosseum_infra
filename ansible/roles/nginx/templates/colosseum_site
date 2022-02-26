@@ -1,0 +1,14 @@
+server {
+    server_name .colosseum.website;
+
+    location /nginx_status {
+      stub_status;
+    }
+
+    location / {
+      include proxy_params;
+      proxy_pass http://unix:{{ install_folder }}/colosseum_website/gunicorn.sock;
+    }
+
+    client_max_body_size 16M;
+}

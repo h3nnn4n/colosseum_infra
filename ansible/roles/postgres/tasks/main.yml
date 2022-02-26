@@ -1,0 +1,61 @@
+---
+- name: Refresh apt and install base packages
+  apt:
+    pkg:
+      - postgresql
+      - libpq-dev
+      - python3-psycopg2
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Copy pg hba settings
+  copy:
+    src: pg_hba.conf
+    dest: /etc/postgresql/12/main/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: '0640'  # Read-write to owner, read-only to group
+
+- name: Ensure postgres is enabled
+  service:
+    name: postgresql
+    enabled: yes
+
+- name: Create app database
+  postgresql_db:
+    state: present
+    name: "{{ vault_postgres_database }}"
+  become: yes
+  become_user: postgres
+
+- name: Create db user
+  postgresql_user:
+    state: present
+    name: "{{ vault_postgres_user }}"
+    password: "{{ vault_postgres_password }}"
+  become: yes
+  become_user: postgres
+
+- name: Grant db user access to app db
+  postgresql_privs:
+    type: database
+    database: "{{ vault_postgres_database }}"
+    roles: "{{ vault_postgres_user }}"
+    grant_option: no
+    privs: all
+  become: yes
+  become_user: postgres
+
+# FIXME: We should probably have our own config file and copy it over
+- name: Ensure postgres is listening to remote connections
+  lineinfile:
+    path: /etc/postgresql/12/main/postgresql.conf
+    regexp: '^listen_addresses ='
+    line: "listen_addresses = '*'"
+
+# FIXME: We should check if we need a restart or not
+- name: Ensure postgres is running and restarted
+  service:
+    name: postgresql
+    state: restarted

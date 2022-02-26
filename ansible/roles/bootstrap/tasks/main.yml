@@ -65,3 +65,11 @@
 
 - name: Ensure prometheus-node-exporter is started
   service: name=prometheus-node-exporter state=started enabled=yes
+
+- name: Ensure working folder is present
+  file:
+    path: "{{ install_folder }}"
+    state: directory
+    recurse: yes
+    owner: devops
+    group: devops

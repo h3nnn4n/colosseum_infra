@@ -3,22 +3,22 @@
   - name: Checkout colosseum
     ansible.builtin.git:
       repo: 'https://github.com/h3nnn4n/colosseum'
-      dest: /home/devops/colosseum
-      version: production
+      dest: '{{ install_folder }}/colosseum'
+      version: "{{ deploy_branch }}"
 
   - name: Ensure poetry is available
-    command: "/home/devops/pyenv/shims/python -m pip install poetry"
+    command: "{{ install_folder }}/pyenv/shims/python -m pip install poetry"
     ignore_errors: yes
 
   - name: Install project deps with Poetry
-    shell: "/home/devops/pyenv/shims/python3 -m poetry install"
+    shell: "{{ install_folder }}/pyenv/shims/python3 -m poetry install"
     args:
-      chdir: "/home/devops/colosseum"
+      chdir: "{{ install_folder }}/colosseum"
 
-  - name: Decrypt and copy secret file
-    copy:
+  - name: Setup dot env
+    template:
       src: dot_env
-      dest: /home/devops/colosseum/.env
+      dest: "{{ install_folder }}/colosseum/.env"
       decrypt: true
       owner: devops
       group: devops
@@ -29,13 +29,15 @@
       pkill -f tournament_online
     ignore_errors: true
 
+  # FIXME: This should account for the number of cores available in the machine
+  # should probably be a host var
   - name: Start worker
     shell: |
-      while [[ true ]]; do /home/devops/pyenv/shims/python3 -m poetry run python3 tournament_online.py; done &
-      while [[ true ]]; do /home/devops/pyenv/shims/python3 -m poetry run python3 tournament_online.py; done &
+      while [[ true ]]; do {{ install_folder }}/pyenv/shims/python3 -m poetry run python3 tournament_online.py; done &
+      while [[ true ]]; do {{ install_folder }}/pyenv/shims/python3 -m poetry run python3 tournament_online.py; done &
     args:
       executable: /bin/bash
-      chdir: /home/devops/colosseum
+      chdir: "{{ install_folder }}/colosseum"
 
   become: true
   become_method: su
