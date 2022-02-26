@@ -1,2 +1,4 @@
 ---
-base_url: https://colosseum.website/
+base_domain: colosseum.website
+base_url: https://{{ base_domain }}/
+deploy_branch: production
