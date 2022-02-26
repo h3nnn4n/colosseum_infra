@@ -29,6 +29,8 @@
       pkill -f tournament_online
     ignore_errors: true
 
+  # FIXME: This should account for the number of cores available in the machine
+  # should probably be a host var
   - name: Start worker
     shell: |
       while [[ true ]]; do {{ install_folder }}/pyenv/shims/python3 -m poetry run python3 tournament_online.py; done &
