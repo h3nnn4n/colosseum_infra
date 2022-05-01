@@ -16,7 +16,7 @@
       version: "{{ deploy_branch }}"
 
   - name: Ensure poetry is available
-    command: "{{ install_folder }}/pyenv/shims/python -m pip install poetry"
+    command: "{{ install_folder }}/pyenv/shims/python3 -m pip install poetry"
 
   - name: Install project deps with Poetry
     command: "{{ install_folder }}/pyenv/shims/python3 -m poetry install"
