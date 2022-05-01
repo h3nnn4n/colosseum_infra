@@ -17,10 +17,24 @@
     group: postgres
     mode: '0640'  # Read-write to owner, read-only to group
 
+# FIXME: We should probably have our own config file and copy it over
+- name: Ensure postgres is listening to remote connections
+  lineinfile:
+    path: /etc/postgresql/12/main/postgresql.conf
+    regexp: '^listen_addresses ='
+    line: "listen_addresses = '*'"
+  become: yes
+  become_user: postgres
+
 - name: Ensure postgres is enabled
   service:
     name: postgresql
     enabled: yes
+
+- name: Ensure postgres is started
+  service:
+    name: postgresql
+    state: started
 
 - name: Create app database
   postgresql_db:
@@ -46,13 +60,6 @@
     privs: all
   become: yes
   become_user: postgres
-
-# FIXME: We should probably have our own config file and copy it over
-- name: Ensure postgres is listening to remote connections
-  lineinfile:
-    path: /etc/postgresql/12/main/postgresql.conf
-    regexp: '^listen_addresses ='
-    line: "listen_addresses = '*'"
 
 # FIXME: We should check if we need a restart or not
 - name: Ensure postgres is running and restarted
