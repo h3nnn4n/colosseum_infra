@@ -1,8 +1,5 @@
 ---
 - hosts: metrics
   roles:
-    - role: bootstrap
-      tags: ['bootstrap']
-
     - role: loki
       tags: ['loki']

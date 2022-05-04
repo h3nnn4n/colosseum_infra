@@ -6,10 +6,6 @@
       dest: "{{ install_folder }}/colosseum_website"
       version: "{{ deploy_branch }}"
 
-  - name: Ensure poetry is available
-    command: "{{ install_folder }}/pyenv/shims/python3 -m pip install poetry"
-    ignore_errors: yes
-
   - name: Install project deps with Poetry
     shell: "{{ install_folder }}/pyenv/shims/python3 -m poetry install"
     args:

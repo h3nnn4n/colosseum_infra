@@ -1,0 +1,11 @@
+---
+- block:
+  - name: Ensure pip is available
+    command: "{{ install_folder }}/pyenv/shims/python3 -m ensurepip"
+
+  - name: Ensure poetry is available
+    command: "{{ install_folder }}/pyenv/shims/python3 -m pip install poetry"
+
+  become: true
+  become_method: su
+  become_user: devops

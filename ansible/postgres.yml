@@ -1,8 +1,5 @@
 ---
 - hosts: postgres
   roles:
-    - role: bootstrap
-      tags: ['bootstrap']
-
     - role: postgres
       tags: ['postgres']

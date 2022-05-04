@@ -1,0 +1,17 @@
+---
+- hosts: all
+  roles:
+    - role: bootstrap
+      tags: ['bootstrap']
+
+    - role: staticdev.pyenv
+      pyenv_path: "{{ install_folder }}/pyenv"
+      pyenv_owner: "devops"
+      pyenv_global:
+        - "{{ python_version }}"
+      pyenv_python_versions:
+        - "{{ python_version }}"
+      tags: ['python']
+
+    - role: python
+      tags: ['python']
