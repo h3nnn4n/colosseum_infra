@@ -1,5 +1,8 @@
 ---
 - block:
+  - name: Ensure the correct python version is installed
+    command: "{{ install_folder }}/pyenv/bin/pyenv install {{ python_version }}"
+
   - name: Ensure pyenv has the correct python version
     command: "{{ install_folder }}/pyenv/bin/pyenv global {{ python_version }}"
 
