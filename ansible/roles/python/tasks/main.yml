@@ -1,5 +1,8 @@
 ---
 - block:
+  - name: Ensure pyenv has the correct python version
+    command: "{{ install_folder }}/pyenv/bin/pyenv global {{ python_version }}"
+
   - name: Ensure pip is available
     command: "{{ install_folder }}/pyenv/shims/python3 -m ensurepip"
 
