@@ -15,8 +15,13 @@
       dest: "{{ install_folder }}/colosseum_website"
       version: "{{ deploy_branch }}"
 
+  - name: Ensure pip is available
+    command: "{{ install_folder }}/pyenv/shims/python3 -m ensurepip"
+
   - name: Ensure poetry is available
     command: "{{ install_folder }}/pyenv/shims/python3 -m pip install poetry"
+    args:
+      chdir: "{{ install_folder }}/colosseum_website"
 
   - name: Install project deps with Poetry
     command: "{{ install_folder }}/pyenv/shims/python3 -m poetry install"
