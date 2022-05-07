@@ -12,14 +12,14 @@ CELERY_REDIS_URL=redis://{{ vault_redis_user }}:{{ vault_redis_password }}@{{ va
 
 SENTRY_DSN={{ vault_sentry_dsn }}
 
-INFLUXDB_HOST=influxdb.colosseum.website
+INFLUXDB_HOST={{ vault_influxdb_host }}
 INFLUXDB_PORT=8086
-INFLUXDB_USER=
-INFLUXDB_PASSWORD=
-INFLUXDB_DATABASE=
-INFLUXDB_USE_CELERY=false
-INFLUXDB_USE_THREADING=true
-INFLUXDB_DISABLED=true
+INFLUXDB_USER={{ vault_influxdb_user }}
+INFLUXDB_PASSWORD={{ vault_influxdb_password }}
+INFLUXDB_DATABASE=colosseum
+INFLUXDB_USE_CELERY=true
+INFLUXDB_USE_THREADING=false
+INFLUXDB_DISABLED=false
 
 CELERY_WORKER_CONCURRENCY=4
 CELERY_WORKER_PREFETCH_MULTIPLIER=1
