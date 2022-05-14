@@ -70,7 +70,7 @@
         --preload \
         --timeout 30 \
         --worker-class sync \
-        --workers 5 > stuff.log &
+        --workers 3 > stuff.log &
     args:
       executable: /bin/bash
       chdir: "{{ install_folder }}/colosseum_website"
