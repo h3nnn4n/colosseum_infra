@@ -29,6 +29,14 @@
       pkill -f tournament_online
     ignore_errors: true
 
+  - name: Clean log and old files
+    shell: |
+      find . -name '*.log' -delete
+      find . -name '*.jsonl' -delete
+    ignore_errors: true
+    args:
+      chdir: "{{ install_folder }}/colosseum"
+
   # FIXME: This should account for the number of cores available in the machine
   # should probably be a host var
   - name: Start worker
