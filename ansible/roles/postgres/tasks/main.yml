@@ -41,6 +41,12 @@
     access_time: preserve
   when: is_replica_db | default(false) | bool == true
 
+- name: Ensure replica.signal doesn't exist for primary
+  file:
+    path: "/var/lib/postgresql/12/main/standby.signal"
+    state: absent
+  when: is_replica_db | default(false) | bool == false
+
 - name: Ensure postgres is enabled
   service:
     name: postgresql
