@@ -17,8 +17,8 @@
     group: postgres
     mode: '0640'  # Read-write to owner, read-only to group
 
-- name: Copy pg settings
-  copy:
+- name: Setup pg settings
+  template:
     src: postgresql.conf
     dest: /etc/postgresql/12/main/postgresql.conf
     owner: postgres
