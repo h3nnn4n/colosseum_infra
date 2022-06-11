@@ -25,15 +25,23 @@
     group: postgres
     mode: '0640'  # Read-write to owner, read-only to group
 
+- name: Ensure WAL archival folder is present
+  file:
+    path: "/var/lib/postgresql/12/main/pg_wal_bkp"
+    state: directory
+    recurse: yes
+    owner: postgres
+    group: postgres
+
 - name: Ensure postgres is enabled
   service:
     name: postgresql
     enabled: yes
 
-- name: Ensure postgres is started
+- name: Ensure postgres is restarted
   service:
     name: postgresql
-    state: started
+    state: restarted
 
 - name: Create app database
   postgresql_db:
@@ -59,17 +67,3 @@
     privs: all
   become: yes
   become_user: postgres
-
-- name: Ensure WAL archival folder is present
-  file:
-    path: "/var/lib/postgresql/12/main/pg_wal_bkp"
-    state: directory
-    recurse: yes
-    owner: postgres
-    group: postgres
-
-# FIXME: We should check if we need a restart or not
-- name: Ensure postgres is running and reloaded
-  service:
-    name: postgresql
-    state: reloaded
