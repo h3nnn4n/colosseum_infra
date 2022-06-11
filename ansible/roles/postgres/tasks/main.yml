@@ -17,14 +17,13 @@
     group: postgres
     mode: '0640'  # Read-write to owner, read-only to group
 
-# FIXME: We should probably have our own config file and copy it over
-- name: Ensure postgres is listening to remote connections
-  lineinfile:
-    path: /etc/postgresql/12/main/postgresql.conf
-    regexp: '^listen_addresses ='
-    line: "listen_addresses = '*'"
-  become: yes
-  become_user: postgres
+- name: Copy pg settings
+  copy:
+    src: postgresql.conf
+    dest: /etc/postgresql/12/main/postgresql.conf
+    owner: postgres
+    group: postgres
+    mode: '0640'  # Read-write to owner, read-only to group
 
 - name: Ensure postgres is enabled
   service:
@@ -61,8 +60,16 @@
   become: yes
   become_user: postgres
 
+- name: Ensure WAL archival folder is present
+  file:
+    path: "/var/lib/postgresql/12/main/pg_wal_bkp"
+    state: directory
+    recurse: yes
+    owner: postgres
+    group: postgres
+
 # FIXME: We should check if we need a restart or not
-- name: Ensure postgres is running and restarted
+- name: Ensure postgres is running and reloaded
   service:
     name: postgresql
-    state: restarted
+    state: reloaded
