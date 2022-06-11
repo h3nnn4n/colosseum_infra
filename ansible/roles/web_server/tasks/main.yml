@@ -70,7 +70,7 @@
         --preload \
         --timeout 30 \
         --worker-class sync \
-        --workers 3 > stuff.log &
+        --workers {{ gunicorn_worker_count | default('2') }} > stuff.log &
     args:
       executable: /bin/bash
       chdir: "{{ install_folder }}/colosseum_website"
