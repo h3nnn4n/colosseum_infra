@@ -33,6 +33,14 @@
     owner: postgres
     group: postgres
 
+- name: Create replica.signal for replica instance
+  file:
+    path: "/var/lib/postgresql/12/main/standby.signal"
+    state: touch
+    modification_time: preserve
+    access_time: preserve
+  when: is_replica_db | default(false) | bool == true
+
 - name: Ensure postgres is enabled
   service:
     name: postgresql
