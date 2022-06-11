@@ -34,7 +34,3 @@
         echo "ACL SETUSER {{ vault_redis_user }} allkeys allcommands on >{{ vault_redis_password }}" | redis-cli
         echo "ACL SETUSER default off" | redis-cli
         echo "CONFIG REWRITE" | redis-cli
-
-      become: yes
-      become_method: sudo
-      become_user: devops
