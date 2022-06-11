@@ -75,3 +75,4 @@
     privs: all
   become: yes
   become_user: postgres
+  when: is_replica_db | default(false) | bool == false
