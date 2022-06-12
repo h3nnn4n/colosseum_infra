@@ -42,10 +42,11 @@
   - name: Start worker
     shell: |
       while [[ true ]]; do {{ install_folder }}/pyenv/shims/python3 -m poetry run python3 tournament_online.py; done &
-      while [[ true ]]; do {{ install_folder }}/pyenv/shims/python3 -m poetry run python3 tournament_online.py; done &
     args:
       executable: /bin/bash
       chdir: "{{ install_folder }}/colosseum"
+    with_sequence: start=1 end={{ colosseum_worker_count | default(1) }}
+
 
   become: true
   become_method: su
