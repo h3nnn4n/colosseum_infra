@@ -1,0 +1,30 @@
+---
+- hosts: colosseum_workers
+  tasks:
+    - name: Clean colosseum workers log and replay files
+      shell: |
+        find . -name '*.log' -delete
+        find . -name '*.jsonl' -delete
+      ignore_errors: true
+      args:
+        chdir: "{{ install_folder }}/colosseum"
+
+
+- hosts: celery_workers
+  tasks:
+    - name: Clean celery logs
+      shell: |
+        find . -name '*.log' -delete
+      ignore_errors: true
+      args:
+        chdir: "{{ install_folder }}/colosseum_website"
+
+
+- hosts: web_servers
+  tasks:
+    - name: Clean gunicorn and django logs
+      shell: |
+        find . -name '*.log' -delete
+      ignore_errors: true
+      args:
+        chdir: "{{ install_folder }}/colosseum_website"
