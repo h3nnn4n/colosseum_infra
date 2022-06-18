@@ -2,7 +2,7 @@ name: Log Cleaner
 
 on:
   schedule:
-    - cron:  '11 * * * *'
+    - cron:  '5 * * * *'
 
 jobs:
   deploy:
