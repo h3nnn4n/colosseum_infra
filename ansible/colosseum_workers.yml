@@ -2,7 +2,7 @@
 - hosts: colosseum_workers
   roles:
     - role: docker
-      tags: ['colosseum_worker']
+      tags: ['docker']
 
     - role: colosseum_worker
       tags: ['colosseum_worker']
