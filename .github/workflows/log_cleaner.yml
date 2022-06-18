@@ -25,7 +25,7 @@ jobs:
           cd ansible
           ansible-galaxy install -r requirements.yml
 
-      - name: Redeploy
+      - name: Clean Logs
         run: |
           cd ansible
           ansible-playbook -i environments/production log_cleaner.yml
