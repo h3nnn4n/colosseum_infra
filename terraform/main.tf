@@ -23,9 +23,14 @@ provider "hcloud" {
 resource "hcloud_server" "colosseum-worker" {
   count       = var.colosseum_worker_count
   name        = "colosseum-worker-${count.index}"
-  image       = "debian-11"
+  image       = var.base_image
   server_type = "cpx11"
   location    = "ash"
+
+  firewall_ids = [
+    hcloud_firewall.ssh_and_ping.id,
+    hcloud_firewall.http_and_https.id
+  ]
 
   ssh_keys    = [
     data.hcloud_ssh_key.personal_laptop.id,
@@ -41,9 +46,14 @@ resource "hcloud_server" "colosseum-worker" {
 resource "hcloud_server" "celery-worker" {
   count       = var.celery_worker_count
   name        = "celery-worker-${count.index}"
-  image       = "debian-11"
+  image       = var.base_image
   server_type = "cpx11"
   location    = "ash"
+
+  firewall_ids = [
+    hcloud_firewall.ssh_and_ping.id,
+    hcloud_firewall.http_and_https.id
+  ]
 
   ssh_keys    = [
     data.hcloud_ssh_key.personal_laptop.id,
@@ -59,9 +69,14 @@ resource "hcloud_server" "celery-worker" {
 resource "hcloud_server" "web-worker" {
   count       = var.web_worker_count
   name        = "web-worker-${count.index}"
-  image       = "debian-11"
+  image       = var.base_image
   server_type = "cpx11"
   location    = "ash"
+
+  firewall_ids = [
+    hcloud_firewall.ssh_and_ping.id,
+    hcloud_firewall.http_and_https.id
+  ]
 
   ssh_keys    = [
     data.hcloud_ssh_key.personal_laptop.id,
@@ -70,6 +85,55 @@ resource "hcloud_server" "web-worker" {
 
   labels = {
     type = "web-worker"
+  }
+}
+
+# https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall
+resource "hcloud_firewall" "ssh_and_ping" {
+  name = "ssh_and_ping"
+
+  rule {
+    direction = "in"
+    protocol  = "icmp"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "22"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+}
+
+# https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall
+resource "hcloud_firewall" "http_and_https" {
+  name = "http_and_https"
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "80"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "443"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
   }
 }
 
