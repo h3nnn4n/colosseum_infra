@@ -1,13 +1,13 @@
 ---
 - block:
-  - name: Ensure pyenv has the correct python version
-    command: "{{ install_folder }}/pyenv/bin/pyenv global {{ python_version }}"
-
   - name: Check for python version
     command: "{{ install_folder }}/pyenv/bin/pyenv versions"
     register: pyenv_out
 
   - debug: var=pyenv_out.stdout_lines
+
+  - name: Ensure pyenv has the correct python version
+    command: "{{ install_folder }}/pyenv/bin/pyenv global {{ python_version }}"
 
   - name: Ensure pip is available
     command: "{{ install_folder }}/pyenv/shims/python3 -m ensurepip"
