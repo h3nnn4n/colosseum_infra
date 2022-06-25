@@ -27,6 +27,11 @@ resource "hcloud_server" "colosseum-worker" {
   server_type = "cpx11"
   location    = "ash"
 
+  ssh_keys    = [
+    data.hcloud_ssh_key.personal_laptop.id,
+    data.hcloud_ssh_key.personal_desktop.id
+  ]
+
   labels = {
     type = "colosseum-worker"
   }
@@ -39,6 +44,11 @@ resource "hcloud_server" "celery-worker" {
   image       = "debian-11"
   server_type = "cpx11"
   location    = "ash"
+
+  ssh_keys    = [
+    data.hcloud_ssh_key.personal_laptop.id,
+    data.hcloud_ssh_key.personal_desktop.id
+  ]
 
   labels = {
     type = "celery-worker"
@@ -53,7 +63,22 @@ resource "hcloud_server" "web-worker" {
   server_type = "cpx11"
   location    = "ash"
 
+  ssh_keys    = [
+    data.hcloud_ssh_key.personal_laptop.id,
+    data.hcloud_ssh_key.personal_desktop.id
+  ]
+
   labels = {
     type = "web-worker"
   }
+}
+
+# https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/data-sources/ssh_key
+data "hcloud_ssh_key" "personal_laptop" {
+  fingerprint = "e3:9e:fd:8c:08:38:76:40:59:00:42:4b:98:ce:b7:66"
+}
+
+# https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/data-sources/ssh_key
+data "hcloud_ssh_key" "personal_desktop" {
+  fingerprint = "fc:25:c6:ef:cd:1e:19:d7:e0:9c:25:fa:17:45:39:b3"
 }
