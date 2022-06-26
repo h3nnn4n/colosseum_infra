@@ -9,10 +9,16 @@
   - name: Ensure pyenv has the correct python version
     shell: "{{ install_folder }}/pyenv/bin/pyenv versions | grep {{ python_version }}"
     register: python_version_check
+    failed_when: python_version_check.rc not in [0, 1]
+
+  - debug: var=python_version_check.rc
 
   - name: Install desired python version
     command: "{{ install_folder }}/pyenv/bin/pyenv install {{ python_version }}"
-    when: python_version_check.failed
+    when: python_version_check.rc == 1
+
+  - name: Ensure correct python version is set
+    command: "{{ install_folder }}/pyenv/bin/pyenv global {{ python_version }}"
 
   - name: Ensure pip is available
     command: "{{ install_folder }}/pyenv/shims/python3 -m ensurepip"
