@@ -11,7 +11,7 @@
         - "{{ python_version }}"
       pyenv_python_versions:
         - "{{ python_version }}"
-      tags: ['python']
+      tags: ['pyenv']
 
     - role: python
       tags: ['python']
