@@ -29,7 +29,8 @@ resource "hcloud_server" "colosseum-worker" {
 
   firewall_ids = [
     hcloud_firewall.ssh_and_ping.id,
-    hcloud_firewall.http_and_https.id
+    hcloud_firewall.http_and_https.id,
+    hcloud_firewall.node_exporter.id
   ]
 
   ssh_keys    = [
@@ -52,7 +53,8 @@ resource "hcloud_server" "celery-worker" {
 
   firewall_ids = [
     hcloud_firewall.ssh_and_ping.id,
-    hcloud_firewall.http_and_https.id
+    hcloud_firewall.http_and_https.id,
+    hcloud_firewall.node_exporter.id
   ]
 
   ssh_keys    = [
@@ -75,7 +77,8 @@ resource "hcloud_server" "web-worker" {
 
   firewall_ids = [
     hcloud_firewall.ssh_and_ping.id,
-    hcloud_firewall.http_and_https.id
+    hcloud_firewall.http_and_https.id,
+    hcloud_firewall.node_exporter.id
   ]
 
   ssh_keys    = [
@@ -130,6 +133,21 @@ resource "hcloud_firewall" "http_and_https" {
     direction = "in"
     protocol  = "tcp"
     port      = "443"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+}
+
+# https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall
+resource "hcloud_firewall" "node_exporter" {
+  name = "node_exporter"
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "9100"
     source_ips = [
       "0.0.0.0/0",
       "::/0"
