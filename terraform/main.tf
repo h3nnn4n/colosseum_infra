@@ -24,7 +24,7 @@ resource "hcloud_server" "colosseum-worker" {
   count       = var.colosseum_worker_count
   name        = "colosseum-worker-${count.index}"
   image       = var.base_image
-  server_type = "cpx11"
+  server_type = var.colosseum_worker_type
   location    = "ash"
 
   firewall_ids = [
@@ -47,7 +47,7 @@ resource "hcloud_server" "celery-worker" {
   count       = var.celery_worker_count
   name        = "celery-worker-${count.index}"
   image       = var.base_image
-  server_type = "cpx11"
+  server_type = var.celery_worker_type
   location    = "ash"
 
   firewall_ids = [
@@ -70,7 +70,7 @@ resource "hcloud_server" "web-worker" {
   count       = var.web_worker_count
   name        = "web-worker-${count.index}"
   image       = var.base_image
-  server_type = "cpx11"
+  server_type = var.web_worker_type
   location    = "ash"
 
   firewall_ids = [
