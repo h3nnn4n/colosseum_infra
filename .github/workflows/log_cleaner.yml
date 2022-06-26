@@ -5,7 +5,7 @@ on:
     - cron:  '5 * * * *'
 
 jobs:
-  deploy:
+  log_cleaner:
     runs-on: ubuntu-latest
 
     steps:
