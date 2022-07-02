@@ -19,4 +19,5 @@ scrape_configs:
       - localhost
     labels:
       source: gunicorn
+      environment: {{ environment }}
       __path__: "{{ install_folder }}/colosseum_website/access.log"
