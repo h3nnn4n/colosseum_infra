@@ -74,6 +74,8 @@
     apt:
       pkg:
         - nginx
+        - apache2-utils
+        - python3-passlib
       state: present
 
   - name: Setup nginx loki site
@@ -99,6 +101,15 @@
     loop:
       - /etc/nginx/sites-enabled/default
       - /etc/nginx/sites-available/default
+
+  - name: Setup loki pass
+    htpasswd:
+      path: /etc/nginx/loki_htpasswd
+      name: "{{ vault_loki_user }}"
+      password: "{{ vault_loki_password }}"
+      owner: root
+      group: root
+      mode: 0640
 
   - name: Ensure nginx is running
     service:

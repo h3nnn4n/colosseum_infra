@@ -8,7 +8,7 @@ server {
   server_name loki.colosseum.website;
 
   auth_basic "loki auth";
-  auth_basic_user_file /etc/nginx/passwords;
+  auth_basic_user_file /etc/nginx/loki_htpasswd;
 
   location / {
     proxy_read_timeout 1800s;
