@@ -67,3 +67,45 @@
   become: yes
   become_method: sudo
   become_user: root
+
+
+- block:
+  - name: Ensure system packages deps are present
+    apt:
+      pkg:
+        - nginx
+      state: present
+
+  - name: Setup nginx loki site
+    template:
+      src: loki_site
+      dest: /etc/nginx/sites-available/loki_site
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Enable loki_site
+    file:
+      src: /etc/nginx/sites-available/loki_site
+      dest: /etc/nginx/sites-enabled/loki_site
+      owner: root
+      group: root
+      state: link
+
+  - name: Disable default nginx site
+    file:
+      path: '{{ item }}'
+      state: absent
+    loop:
+      - /etc/nginx/sites-enabled/default
+      - /etc/nginx/sites-available/default
+
+  - name: Ensure nginx is running
+    service:
+      name: nginx
+      state: started
+
+  - name: Reload nginx
+    service:
+      name: nginx
+      state: reloaded

@@ -6,3 +6,6 @@
 
     - role: nginx
       tags: ['nginx']
+
+    - role: promtail
+      tags: ['promtail']
