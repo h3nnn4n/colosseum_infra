@@ -11,9 +11,7 @@ jobs:
   deploy:
     strategy:
       matrix:
-        environment:
-          - staging
-          - production
+        environment: [staging, production]
     runs-on: ubuntu-latest
 
     steps:
