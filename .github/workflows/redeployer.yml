@@ -37,12 +37,13 @@ jobs:
       - name: Redeploy
         run: |
           cd ansible
-          ansible-playbook -i environments/${{ environment }} \
-            bootstrap.yml                                     \
-            redis.yml                                         \
-            postgres.yml                                      \
-            colosseum_workers.yml                             \
-            celery_workers.yml                                \
+          ansible-playbook                          \
+          -i environments/${{ matrix.environment }} \
+            bootstrap.yml                           \
+            redis.yml                               \
+            postgres.yml                            \
+            colosseum_workers.yml                   \
+            celery_workers.yml                      \
             web_servers.yml
         env:
           VAULT_PASSWORD: "${{ secrets.VAULT_PASSWORD }}"
