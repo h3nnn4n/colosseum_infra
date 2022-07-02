@@ -11,12 +11,3 @@ clients:
   basic_auth:
     username: {{ vault_loki_user }}
     password: {{ vault_loki_password }}
-
-scrape_configs:
-- job_name: system
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: varlogs
-      __path__: /var/log/*log
