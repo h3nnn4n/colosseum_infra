@@ -109,7 +109,7 @@
       password: "{{ vault_loki_password }}"
       owner: root
       group: root
-      mode: 0640
+      mode: 0644
 
   - name: Ensure nginx is running
     service:
