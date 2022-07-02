@@ -3,9 +3,17 @@ name: Redeployer
 on:
   schedule:
     - cron:  '11 * * * *'
+  push:
+     branches:
+      - production
 
 jobs:
   deploy:
+    strategy:
+      matrix:
+        environment:
+          - staging
+          - production
     runs-on: ubuntu-latest
 
     steps:
@@ -28,7 +36,12 @@ jobs:
       - name: Redeploy
         run: |
           cd ansible
-          ansible-playbook -i environments/production redis.yml postgres.yml colosseum_workers.yml celery_workers.yml web_servers.yml
-          ansible-playbook -i environments/staging    redis.yml postgres.yml colosseum_workers.yml celery_workers.yml web_servers.yml
+          ansible-playbook -i environments/${{ environment }} \
+            bootstrap.yml                                     \
+            redis.yml                                         \
+            postgres.yml                                      \
+            colosseum_workers.yml                             \
+            celery_workers.yml                                \
+            web_servers.yml
         env:
           VAULT_PASSWORD: "${{ secrets.VAULT_PASSWORD }}"
