@@ -1,0 +1,53 @@
+---
+- block:
+  - name: Ensure promtail install directory exists
+    file:
+      path: /opt/promtail/
+      state: directory
+      owner: devops
+      group: devops
+      mode: '0755'
+
+  - name: Download promtail
+    get_url:
+      url: https://github.com/grafana/loki/releases/download/v2.5.0/promtail-linux-amd64.zip
+      dest: /opt/promtail/promtail-linux-amd64.zip
+      owner: devops
+      group: devops
+      mode: '0400'  # Read-only to owner
+
+  - name: Extract promtail
+    unarchive:
+      src: /opt/promtail/promtail-linux-amd64.zip
+      dest: /opt/promtail/
+      remote_src: yes
+      owner: devops
+      group: devops
+      mode: '0700'
+
+  - name: Setup promtail config
+    template:
+      src: promtail-config.yaml
+      dest: /opt/promtail/promtail-config.yaml
+      owner: devops
+      group: devops
+      mode: '0644'
+
+  - name: Stop promtail
+    command: |
+      pkill --full promtail
+    ignore_errors: true
+
+  - name: Ensure promtail is running
+    shell: |
+      /opt/promtail/promtail-linux-amd64 \
+      -config.file=/opt/promtail/promtail-config.yaml \
+       >> /opt/promtail/promtail_stdout.log \
+      2>> /opt/promtail/promtail_stderr.log \
+      &
+    args:
+      executable: /bin/bash
+      chdir: /opt/promtail/
+    become: yes
+    become_method: su
+    become_user: devops
