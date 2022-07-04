@@ -28,3 +28,7 @@ RANDOM_MATCH_ENABLED=true
 RANDOM_MATCH_RATIO=0.8
 
 REPLAY_JS_BUNDLE_URL={{ vault_replay_js_bundle_url }}
+
+LOKI_HOST={{ vault_loki_host }}
+LOKI_USER={{ vault_loki_user }}
+LOKI_PASSWORD={{ vault_loki_password }}
