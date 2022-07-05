@@ -24,6 +24,7 @@
     owner: postgres
     group: postgres
     mode: '0640'  # Read-write to owner, read-only to group
+  register: pg_settings
 
 - name: Ensure WAL archival folder is present
   file:
@@ -56,6 +57,7 @@
   service:
     name: postgresql
     state: restarted
+  when: pg_settings.changed
 
 - name: Create app database
   postgresql_db:
