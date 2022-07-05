@@ -26,3 +26,7 @@ CELERY_WORKER_PREFETCH_MULTIPLIER=1
 
 RANDOM_MATCH_ENABLED=true
 RANDOM_MATCH_RATIO=0.8
+
+LOKI_HOST={{ vault_loki_host }}
+LOKI_USER={{ vault_loki_user }}
+LOKI_PASSWORD={{ vault_loki_password }}
