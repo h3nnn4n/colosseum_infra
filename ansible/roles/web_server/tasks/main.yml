@@ -38,7 +38,7 @@
 
   - name: Run django migrations
     shell: |
-      DJANGO_SETTINGS_MODULE=colosseum_website.settings.{{ environment }} \
+      DJANGO_SETTINGS_MODULE=colosseum_website.settings.{{ environment_name }} \
       {{ install_folder }}/pyenv/shims/python3 -m poetry run python3 manage.py migrate
     args:
       executable: /bin/bash
@@ -46,7 +46,7 @@
 
   - name: Run django collectstatic
     shell: |
-      DJANGO_SETTINGS_MODULE=colosseum_website.settings.{{ environment }} \
+      DJANGO_SETTINGS_MODULE=colosseum_website.settings.{{ environment_name }} \
       {{ install_folder }}/pyenv/shims/python3 -m poetry run python3 manage.py collectstatic --no-input
     args:
       executable: /bin/bash
@@ -59,7 +59,7 @@
 
   - name: Ensure Gunicorn is running
     shell: |
-      DJANGO_SETTINGS_MODULE=colosseum_website.settings.{{ environment }} \
+      DJANGO_SETTINGS_MODULE=colosseum_website.settings.{{ environment_name }} \
       {{ install_folder }}/pyenv/shims/python3 -m poetry run gunicorn \
         colosseum_website.wsgi \
         --bind=unix:{{ install_folder }}/colosseum_website/gunicorn.sock \
