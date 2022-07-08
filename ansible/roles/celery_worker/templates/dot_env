@@ -1,4 +1,4 @@
-DJANGO_SETTINGS_MODULE=colosseum_website.settings.production
+DJANGO_SETTINGS_MODULE=colosseum_website.settings.{{ environment }}
 SECRET_KEY={{ vault_django_secret }}
 
 AWS_ACCESS_KEY_ID={{ vault_aws_access_key_id }}
