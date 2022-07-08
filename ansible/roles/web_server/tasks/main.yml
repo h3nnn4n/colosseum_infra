@@ -59,7 +59,7 @@
 
   - name: Ensure Gunicorn is running
     shell: |
-      DJANGO_SETTINGS_MODULE=colosseum_website.settings.production \
+      DJANGO_SETTINGS_MODULE=colosseum_website.settings.{{ environment }} \
       {{ install_folder }}/pyenv/shims/python3 -m poetry run gunicorn \
         colosseum_website.wsgi \
         --bind=unix:{{ install_folder }}/colosseum_website/gunicorn.sock \
