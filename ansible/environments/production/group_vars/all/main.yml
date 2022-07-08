@@ -2,4 +2,4 @@
 base_domain: colosseum.website
 base_url: https://{{ base_domain }}/
 deploy_branch: production
-environment: production
+environment_name: production
