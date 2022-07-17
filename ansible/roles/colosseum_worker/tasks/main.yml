@@ -37,9 +37,7 @@
     args:
       chdir: "{{ install_folder }}/colosseum"
 
-  # FIXME: This should account for the number of cores available in the machine
-  # should probably be a host var
-  - name: Start worker
+  - name: Start workers
     shell: |
       for i in `seq {{ colosseum_worker_count | default(1) }}`;
       do
