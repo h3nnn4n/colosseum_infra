@@ -34,6 +34,7 @@
       docker stop $(docker ps -a -q)
     args:
       executable: /bin/bash
+    ignore_errors: true
     when: use_docker | default(false)
 
   - name: Clean log and old files
