@@ -7,6 +7,9 @@ on:
 jobs:
   log_cleaner:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        colosseum_enviroment: ["production", "staging"]
 
     steps:
       - uses: actions/checkout@v2
@@ -28,7 +31,6 @@ jobs:
       - name: Clean Logs
         run: |
           cd ansible
-          ansible-playbook -i environments/production log_cleaner.yml
-          ansible-playbook -i environments/staging    log_cleaner.yml
+          ansible-playbook -i environments/${{ matrix.colosseum_enviroment }} log_cleaner.yml
         env:
           VAULT_PASSWORD: "${{ secrets.VAULT_PASSWORD }}"
