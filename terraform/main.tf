@@ -171,7 +171,7 @@ resource "hcloud_firewall" "nginx_exporter" {
 
 # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/data-sources/ssh_key
 data "hcloud_ssh_key" "personal_laptop" {
-  fingerprint = "e3:9e:fd:8c:08:38:76:40:59:00:42:4b:98:ce:b7:66"
+  fingerprint = "d2:96:c6:17:de:8d:61:a0:16:3d:14:22:c5:3c:a5:47"
 }
 
 # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/data-sources/ssh_key
