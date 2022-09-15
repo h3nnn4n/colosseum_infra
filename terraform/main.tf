@@ -176,5 +176,5 @@ data "hcloud_ssh_key" "personal_laptop" {
 
 # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/data-sources/ssh_key
 data "hcloud_ssh_key" "personal_desktop" {
-  fingerprint = "fc:25:c6:ef:cd:1e:19:d7:e0:9c:25:fa:17:45:39:b3"
+  fingerprint = "ef:1c:91:af:39:21:b5:8a:c1:23:da:52:00:32:c4:b2"
 }
