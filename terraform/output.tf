@@ -18,3 +18,7 @@ output "web-worker-ips" {
     server.name => server.ipv4_address
   }
 }
+
+output "database-ip" {
+  value = hcloud_server.postgres.ipv4_address
+}
