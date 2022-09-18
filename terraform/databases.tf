@@ -8,7 +8,8 @@ resource "hcloud_server" "postgres" {
   firewall_ids = [
     hcloud_firewall.ssh_and_ping.id,
     hcloud_firewall.node_exporter.id,
-    hcloud_firewall.postgres.id
+    hcloud_firewall.postgres.id,
+    hcloud_firewall.redis.id
   ]
 
   ssh_keys    = [

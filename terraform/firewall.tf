@@ -78,6 +78,21 @@ resource "hcloud_firewall" "nginx_exporter" {
 }
 
 # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall
+resource "hcloud_firewall" "redis" {
+  name = "redis"
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "6379"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+}
+
+# https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall
 resource "hcloud_firewall" "postgres" {
   name = "postgres"
 
