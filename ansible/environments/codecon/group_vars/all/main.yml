@@ -1,0 +1,5 @@
+---
+base_domain: codecon.colosseum.website
+base_url: https://{{ base_domain }}/
+deploy_branch: production
+environment_name: codecon

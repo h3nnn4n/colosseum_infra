@@ -36,3 +36,8 @@ variable "base_image" {
   default = "ubuntu-20.04"
   type = string
 }
+
+variable "database_worker_type" {
+  default = "cpx21"
+  type = string
+}
