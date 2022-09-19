@@ -30,3 +30,5 @@ RANDOM_MATCH_RATIO=0.8
 LOKI_HOST={{ vault_loki_host }}
 LOKI_USER={{ vault_loki_user }}
 LOKI_PASSWORD={{ vault_loki_password }}
+
+ENABLE_AUTOMATED_SEASONS={{ enable_automated_seasons | default(false) }}
