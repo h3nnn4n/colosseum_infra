@@ -2,7 +2,7 @@ name: Redeployer
 
 on:
   schedule:
-    - cron:  '11 * * * *'
+    - cron:  '*/10 * * * *'
   push:
      branches:
       - production
@@ -13,8 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         environment:
-          - staging
-          - production
           - codecon
 
     runs-on: ubuntu-latest
@@ -42,12 +40,6 @@ jobs:
           cd ansible
           ansible-playbook                          \
           -i environments/${{ matrix.environment }} \
-            bootstrap.yml                           \
-            redis.yml                               \
-            postgres.yml                            \
-            metrics.yml                             \
-            colosseum_workers.yml                   \
-            celery_workers.yml                      \
-            web_servers.yml
+            colosseum_workers.yml
         env:
           VAULT_PASSWORD: "${{ secrets.VAULT_PASSWORD }}"
