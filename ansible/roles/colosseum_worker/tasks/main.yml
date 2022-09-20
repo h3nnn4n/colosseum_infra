@@ -29,6 +29,11 @@
       pkill -f tournament_online
     ignore_errors: true
 
+  - name: Stop dangling docker wrappers
+    command: |
+      pkill -f docker_http
+    ignore_errors: true
+
   - name: Stop old docker instances running
     shell: |
       docker stop $(docker ps -a -q)
