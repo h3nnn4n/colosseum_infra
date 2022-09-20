@@ -15,6 +15,8 @@ jobs:
           - production
           - codecon
 
+    timeout-minutes: 5
+
     steps:
       - uses: actions/checkout@v2
         with:
