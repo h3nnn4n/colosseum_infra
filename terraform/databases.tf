@@ -14,7 +14,9 @@ resource "hcloud_server" "postgres" {
 
   ssh_keys    = [
     data.hcloud_ssh_key.personal_laptop.id,
-    data.hcloud_ssh_key.personal_desktop.id
+    data.hcloud_ssh_key.personal_desktop.id,
+    data.hcloud_ssh_key.key_1.id,
+    data.hcloud_ssh_key.key_2.id
   ]
 
   labels = {
