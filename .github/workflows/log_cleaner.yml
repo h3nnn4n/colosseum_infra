@@ -10,7 +10,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        colosseum_enviroment: ["production", "staging"]
+        colosseum_enviroment:
+          - staging
+          - production
+          - codecon
 
     steps:
       - uses: actions/checkout@v2
