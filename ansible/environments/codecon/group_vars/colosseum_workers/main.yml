@@ -1,3 +1,3 @@
 ---
-use_docker: True
-force_docker: True
+use_docker: False
+force_docker: False
