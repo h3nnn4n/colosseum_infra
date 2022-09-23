@@ -65,10 +65,10 @@
   # This is here as a safety measure. If an agent breaks free of the sandbox,
   # they won't have access to the access tokens. Doing this also makes it
   # basically impossible to restart a worker without running this playbook
-  - name: Remove dot env file
-    file:
-      path: "{{ install_folder }}/colosseum/.env"
-      state: absent
+  # - name: Remove dot env file
+  #   file:
+  #     path: "{{ install_folder }}/colosseum/.env"
+  #     state: absent
 
   become: true
   become_method: su
