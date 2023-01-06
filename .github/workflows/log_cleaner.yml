@@ -13,7 +13,6 @@ jobs:
         colosseum_enviroment:
           - staging
           - production
-          - codecon
 
     timeout-minutes: 5
 
