@@ -15,7 +15,6 @@ jobs:
         environment:
           - staging
           - production
-          - codecon
 
     runs-on: ubuntu-latest
 
