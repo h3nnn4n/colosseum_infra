@@ -62,7 +62,7 @@ variable "staging_type" {
 }
 
 variable "base_image" {
-  default = "ubuntu-20.04"
+  default = "ubuntu-24.04"
   type    = string
 }
 
