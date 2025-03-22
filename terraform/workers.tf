@@ -11,7 +11,7 @@ resource "hcloud_server" "colosseum-worker" {
     hcloud_firewall.node_exporter.id
   ]
 
-  ssh_keys    = [
+  ssh_keys = [
     data.hcloud_ssh_key.hekatoncheires.id,
   ]
 
@@ -33,7 +33,7 @@ resource "hcloud_server" "celery-worker" {
     hcloud_firewall.node_exporter.id
   ]
 
-  ssh_keys    = [
+  ssh_keys = [
     data.hcloud_ssh_key.hekatoncheires.id,
   ]
 
@@ -57,7 +57,7 @@ resource "hcloud_server" "web-worker" {
     hcloud_firewall.nginx_exporter.id
   ]
 
-  ssh_keys    = [
+  ssh_keys = [
     data.hcloud_ssh_key.hekatoncheires.id,
   ]
 

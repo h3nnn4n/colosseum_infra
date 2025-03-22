@@ -12,7 +12,7 @@ resource "hcloud_server" "postgres" {
     hcloud_firewall.redis.id
   ]
 
-  ssh_keys    = [
+  ssh_keys = [
     data.hcloud_ssh_key.hekatoncheires.id,
   ]
 
