@@ -1,4 +1,6 @@
 terraform {
+  required_version = "= 1.6.5"
+
   # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
   required_providers {
     hcloud = {
