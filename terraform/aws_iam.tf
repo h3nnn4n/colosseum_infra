@@ -1,4 +1,3 @@
-# IAM user for GitHub CI
 resource "aws_iam_user" "colosseum_github_ci" {
   name = "colosseum-github-ci"
   path = "/"
@@ -9,29 +8,39 @@ resource "aws_iam_user" "colosseum_github_ci" {
   }
 }
 
-data "aws_iam_policy_document" "terraform_state_access" {
-  statement {
-    sid    = "TerraformStateReadWrite"
-    effect = "Allow"
-
-    actions = [
-      "s3:GetObject",
-      "s3:PutObject",
-      "s3:ListBucket",
-      "s3:DeleteObject"
-    ]
-
-    resources = [
-      "arn:aws:s3:::colosseum-terraform-state",
-      "arn:aws:s3:::colosseum-terraform-state/*"
-    ]
-  }
-}
-
 resource "aws_iam_policy" "terraform_state_access" {
   name        = "colosseum-terraform-state-access"
   description = "Policy for access to Colosseum terraform state bucket"
-  policy      = data.aws_iam_policy_document.terraform_state_access.json
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "TerraformStateReadWrite",
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListBucket",
+          "s3:DeleteObject"
+        ],
+        Resource = [
+          "arn:aws:s3:::colosseum-terraform-state",
+          "arn:aws:s3:::colosseum-terraform-state/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "iam:GetPolicy",
+          "iam:GetUser",
+        ],
+        Resource = [
+          "*",
+        ]
+      },
+    ]
+  })
 }
 
 resource "aws_iam_user_policy_attachment" "colosseum_github_ci_policy" {
