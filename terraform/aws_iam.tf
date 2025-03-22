@@ -9,10 +9,6 @@ resource "aws_iam_user" "colosseum_github_ci" {
   }
 }
 
-resource "aws_iam_access_key" "colosseum_github_ci_key" {
-  user = aws_iam_user.colosseum_github_ci.name
-}
-
 data "aws_iam_policy_document" "terraform_state_access" {
   statement {
     sid    = "TerraformStateReadWrite"
