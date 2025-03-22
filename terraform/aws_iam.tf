@@ -50,10 +50,13 @@ resource "aws_iam_policy" "terraform_state_access" {
         Sid    = "IAMReadAccess",
         Effect = "Allow",
         Action = [
-          "iam:ListUsers",
-          "iam:ListPolicies",
+          "iam:GetPolicy",
           "iam:GetPolicyVersion",
           "iam:ListPolicyVersions",
+          "iam:GetUser",
+          "iam:GetUserPolicy",
+          "iam:ListAttachedUserPolicies",
+          "iam:ListUserPolicies"
         ],
         Resource = "*"
       }
