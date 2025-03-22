@@ -42,12 +42,3 @@ resource "aws_iam_user_policy_attachment" "colosseum_github_ci_policy" {
   user       = aws_iam_user.colosseum_github_ci.name
   policy_arn = aws_iam_policy.terraform_state_access.arn
 }
-
-output "colosseum_github_ci_access_key_id" {
-  value = aws_iam_access_key.colosseum_github_ci_key.id
-}
-
-output "colosseum_github_ci_secret_key" {
-  value     = aws_iam_access_key.colosseum_github_ci_key.secret
-  sensitive = true
-}
