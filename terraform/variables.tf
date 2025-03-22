@@ -51,6 +51,16 @@ variable "web_worker_count" {
   type    = number
 }
 
+variable "staging_count" {
+  default = 1
+  type    = number
+}
+
+variable "staging_type" {
+  default = "cpx11"
+  type    = string
+}
+
 variable "base_image" {
   default = "ubuntu-20.04"
   type    = string

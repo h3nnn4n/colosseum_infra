@@ -19,6 +19,13 @@ output "web-worker-ips" {
   }
 }
 
+output "staging-ip" {
+  value = {
+    for server in hcloud_server.staging_worker :
+    server.name => server.ipv4_address
+  }
+}
+
 output "database-ip" {
   value = hcloud_server.postgres.ipv4_address
 }
