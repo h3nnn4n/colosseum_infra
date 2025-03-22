@@ -19,13 +19,15 @@ jobs:
         working-directory: terraform
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@85e6279
         with:
           repository: "h3nnn4n/colosseum_infra"
           ref: main
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@b9cd54a
+        with:
+          terraform_version: 1.6.5
 
       - name: Terraform Init
         run: terraform init
