@@ -3,6 +3,24 @@ variable "hcloud_token" {
   type      = string
 }
 
+variable "aws_region" {
+  default     = "us-east-1"
+  type        = string
+  description = "AWS region for resources"
+}
+
+variable "aws_access_key" {
+  sensitive   = true
+  type        = string
+  description = "AWS access key"
+}
+
+variable "aws_secret_key" {
+  sensitive   = true
+  type        = string
+  description = "AWS secret key"
+}
+
 variable "colosseum_worker_type" {
   default = "cpx11"
   type = string
