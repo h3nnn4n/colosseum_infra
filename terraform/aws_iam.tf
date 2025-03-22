@@ -34,6 +34,8 @@ resource "aws_iam_policy" "terraform_state_access" {
         Effect = "Allow",
         Action = [
           "iam:GetPolicy",
+          "iam:GetPolicyVersion",
+          "iam:ListPolicyVersions",
           "iam:GetUser",
           "iam:GetUserPolicy",
           "iam:ListAttachedUserPolicies",
