@@ -1,5 +1,6 @@
 variable "hcloud_token" {
   sensitive = true
+  type      = string
 }
 
 variable "colosseum_worker_type" {
