@@ -23,3 +23,15 @@ resource "hcloud_server" "postgres" {
     type = "database"
   }
 }
+
+# https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/volume
+resource "hcloud_volume" "postgres_data" {
+  name      = var.postgres_volume_name
+  size      = var.postgres_volume_size
+  server_id = hcloud_server.postgres.id
+  automount = true
+  format    = "ext4"
+  labels = {
+    type = "database-storage"
+  }
+}

@@ -42,3 +42,15 @@ variable "database_worker_type" {
   default = "cpx21"
   type = string
 }
+
+variable "postgres_volume_size" {
+  default = 20
+  type    = number
+  description = "Size of the Postgres volume in GB"
+}
+
+variable "postgres_volume_name" {
+  default = "postgres-data"
+  type    = string
+  description = "Name of the Postgres volume"
+}
