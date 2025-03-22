@@ -30,32 +30,15 @@ resource "aws_iam_policy" "terraform_state_access" {
         ]
       },
       {
-        Sid    = "IAMSelfManagement",
-        Effect = "Allow",
-        Action = [
-          "iam:GetPolicy",
-          "iam:GetPolicyVersion",
-          "iam:ListPolicyVersions",
-          "iam:GetUser",
-          "iam:GetUserPolicy",
-          "iam:ListAttachedUserPolicies",
-          "iam:ListUserPolicies"
-        ],
-        Resource = [
-          "arn:aws:iam::545389514010:user/colosseum-github-ci",
-          "arn:aws:iam::545389514010:policy/colosseum-terraform-state-access"
-        ]
-      },
-      {
         Sid    = "IAMReadAccess",
         Effect = "Allow",
         Action = [
           "iam:GetPolicy",
           "iam:GetPolicyVersion",
-          "iam:ListPolicyVersions",
           "iam:GetUser",
           "iam:GetUserPolicy",
           "iam:ListAttachedUserPolicies",
+          "iam:ListPolicyVersions",
           "iam:ListUserPolicies"
         ],
         Resource = "*"
