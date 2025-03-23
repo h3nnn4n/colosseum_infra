@@ -12,6 +12,7 @@
       - libmagic1  # For mime detection
       - libpq-dev
       - neovim
+      - iredis
       - prometheus-node-exporter
       - sudo
       - nmap
