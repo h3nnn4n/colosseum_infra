@@ -1,18 +1,52 @@
 ---
+- name: Add PostgreSQL GPG key
+  ansible.builtin.get_url:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    dest: /etc/apt/trusted.gpg.d/postgresql.gpg
+    mode: '0644'
+
+- name: Add PostgreSQL repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"
+    state: present
+    filename: pgdg
+
+- name: Remove old postgres versions
+  apt:
+    pkg:
+      - postgresql-16
+      - postgres
+    state: absent
+  ignore_errors: yes
+
 - name: Refresh apt and install base packages
   apt:
     pkg:
-      - postgresql
+      - postgresql-17
+      - postgresql-client-17
+      - postgresql-common
       - libpq-dev
       - python3-psycopg2
+      - ca-certificates
     state: present
     update_cache: yes
     cache_valid_time: 3600
 
+- name: Check if PostgreSQL cluster exists
+  ansible.builtin.stat:
+    path: /var/lib/postgresql/17/main/PG_VERSION
+  register: pg_version_file
+
+- name: Initialize PostgreSQL cluster
+  ansible.builtin.command: pg_createcluster 17 main
+  become: yes
+  become_user: root
+  when: not pg_version_file.stat.exists
+
 - name: Copy pg hba settings
   copy:
     src: pg_hba.conf
-    dest: /etc/postgresql/12/main/pg_hba.conf
+    dest: /etc/postgresql/17/main/pg_hba.conf
     owner: postgres
     group: postgres
     mode: '0640'  # Read-write to owner, read-only to group
@@ -20,7 +54,7 @@
 - name: Setup pg settings
   template:
     src: postgresql.conf
-    dest: /etc/postgresql/12/main/postgresql.conf
+    dest: /etc/postgresql/17/main/postgresql.conf
     owner: postgres
     group: postgres
     mode: '0640'  # Read-write to owner, read-only to group
@@ -28,7 +62,7 @@
 
 - name: Ensure WAL archival folder is present
   file:
-    path: "/var/lib/postgresql/12/main/pg_wal_bkp"
+    path: "/var/lib/postgresql/17/main/pg_wal_bkp"
     state: directory
     recurse: yes
     owner: postgres
@@ -36,7 +70,7 @@
 
 - name: Create replica.signal for replica instance
   file:
-    path: "/var/lib/postgresql/12/main/standby.signal"
+    path: "/var/lib/postgresql/17/main/standby.signal"
     state: touch
     modification_time: preserve
     access_time: preserve
@@ -44,7 +78,7 @@
 
 - name: Ensure replica.signal doesn't exist for primary
   file:
-    path: "/var/lib/postgresql/12/main/standby.signal"
+    path: "/var/lib/postgresql/17/main/standby.signal"
     state: absent
   when: is_replica_db | default(false) | bool == false
 
