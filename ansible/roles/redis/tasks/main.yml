@@ -22,19 +22,14 @@
     - { line_to_match: "bind", line_to_configure: "bind 0.0.0.0" }
     - { line_to_match: "maxmemory-policy", line_to_configure: "maxmemory-policy allkeys-lru" }
     - { line_to_match: "maxmemory-samples", line_to_configure: "maxmemory-samples 10" }
-    - { line_to_match: "requirepass", line_to_configure: "" }
+    - { line_to_match: "^# requirepass", line_to_configure: "requirepass {{ vault_redis_password | default('') }}" }
+    - { line_to_match: "^requirepass", line_to_configure: "requirepass {{ vault_redis_password | default('') }}" }
     - { line_to_match: "protected-mode", line_to_configure: "protected-mode no" }
   register: redis_conf
+  when: vault_redis_password is defined
 
 - name: Ensure redis service is restarted
   ansible.builtin.systemd:
     name: redis-server
     state: restarted
   when: redis_conf.changed
-
-- name: Ensure Redis ACL are set
-  ansible.builtin.shell: |
-    echo "ACL SETUSER {{ vault_redis_user }} allkeys allcommands on >{{ vault_redis_password }}" | redis-cli
-    echo "ACL SETUSER default off" | redis-cli
-    echo "CONFIG REWRITE" | redis-cli
-  when: vault_redis_user is defined and vault_redis_password is defined
