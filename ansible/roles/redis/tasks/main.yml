@@ -25,11 +25,24 @@
     - { line_to_match: "^# requirepass", line_to_configure: "requirepass {{ vault_redis_password | default('') }}" }
     - { line_to_match: "^requirepass", line_to_configure: "requirepass {{ vault_redis_password | default('') }}" }
     - { line_to_match: "protected-mode", line_to_configure: "protected-mode no" }
+    - { line_to_match: "^aclfile", line_to_configure: "# aclfile /etc/redis/users.acl" }
   register: redis_conf
   when: vault_redis_password is defined
+
+# Remove all ACL configurations to ensure only password auth is used
+- name: Reset Redis ACL configuration (Redis 6+)
+  ansible.builtin.shell: |
+    redis-cli ACL DELUSER default >/dev/null 2>&1 || true
+    redis-cli CONFIG SET requirepass "{{ vault_redis_password }}"
+    redis-cli -a "{{ vault_redis_password }}" ACL SETUSER default on >{{ vault_redis_password }} allkeys allcommands
+    redis-cli -a "{{ vault_redis_password }}" ACL SAVE
+  when: vault_redis_password is defined
+  register: reset_acl
+  changed_when: reset_acl.rc == 0
+  failed_when: false  # Don't fail if Redis doesn't support ACLs (version < 6)
 
 - name: Ensure redis service is restarted
   ansible.builtin.systemd:
     name: redis-server
     state: restarted
-  when: redis_conf.changed
+  when: redis_conf.changed or reset_acl.changed
