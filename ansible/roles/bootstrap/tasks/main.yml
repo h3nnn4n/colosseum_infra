@@ -12,9 +12,8 @@
       - libmagic1  # For mime detection
       - libpq-dev
       - neovim
+      - iredis
       - prometheus-node-exporter
-      - python-apt
-      - python3-apt
       - sudo
       - nmap
       - unzip
@@ -59,11 +58,6 @@
     dest: /etc/ssh/sshd_config
     regexp: '^(.*)PasswordAuthentication(.*)$'
     line: 'PasswordAuthentication no'
-
-- name: Restart ssh
-  ansible.builtin.service:
-    name: sshd
-    state: restarted
 
 - name: Ensure prometheus-node-exporter is started
   service: name=prometheus-node-exporter state=started enabled=yes
