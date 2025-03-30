@@ -28,6 +28,11 @@
     args:
       chdir: "{{ install_folder }}/colosseum_website"
 
+  - name: Upgrade setuptools
+    command: "{{ install_folder }}/pyenv/shims/python3 -m poetry run pip install setuptools"
+    args:
+      chdir: "{{ install_folder }}/colosseum_website"
+
   - name: Setup .env file
     template:
       src: dot_env
