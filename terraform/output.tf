@@ -50,6 +50,16 @@ output "db_domain" {
   description = "The fully qualified domain name for the database"
 }
 
+output "celery_domain" {
+  value       = aws_route53_record.db.fqdn
+  description = "The fully qualified domain name for the database"
+}
+
+output "worker_domain" {
+  value       = aws_route53_record.db.fqdn
+  description = "The fully qualified domain name for the database"
+}
+
 output "staging_domain" {
   value       = aws_route53_record.staging.fqdn
   description = "The fully qualified domain name for the staging environment"
