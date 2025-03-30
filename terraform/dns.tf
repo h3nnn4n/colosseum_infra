@@ -26,6 +26,14 @@ resource "aws_route53_record" "db" {
   records = [hcloud_server.postgres.ipv4_address]
 }
 
+resource "aws_route53_record" "redis" {
+  zone_id = data.aws_route53_zone.colosseum_website.zone_id
+  name    = "redis.colosseum.website"
+  type    = "A"
+  ttl     = 300
+  records = [hcloud_server.postgres.ipv4_address]
+}
+
 resource "aws_route53_record" "celery" {
   zone_id = data.aws_route53_zone.colosseum_website.zone_id
   name    = "celery.colosseum.website"
