@@ -55,5 +55,5 @@ resource "aws_route53_record" "metrics" {
   name    = "metrics.colosseum.website"
   type    = "A"
   ttl     = 300
-  records = [data.hcloud_server.metrics.ipv4_address]
+  records = [hcloud_server.metrics.ipv4_address]
 }

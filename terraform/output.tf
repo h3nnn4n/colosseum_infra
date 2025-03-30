@@ -31,7 +31,7 @@ output "database-ip" {
 }
 
 output "metrics-ip" {
-  value = data.hcloud_server.metrics.ipv4_address
+  value = hcloud_server.metrics.ipv4_address
 }
 
 output "route53_zone_id" {
@@ -70,6 +70,6 @@ output "staging_domain" {
 }
 
 output "metrics_domain" {
-  value       = aws_route53_record.staging.fqdn
+  value       = aws_route53_record.metrics.fqdn
   description = "The fully qualified domain name for the metrics database"
 }

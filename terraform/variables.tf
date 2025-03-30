@@ -61,13 +61,13 @@ variable "staging_type" {
   type    = string
 }
 
-variable "base_image" {
-  default = "ubuntu-24.04"
+variable "database_worker_type" {
+  default = "cpx21"
   type    = string
 }
 
-variable "database_worker_type" {
-  default = "cpx21"
+variable "metrics_type" {
+  default = "cpx31"
   type    = string
 }
 
@@ -81,4 +81,14 @@ variable "postgres_volume_name" {
   default     = "postgres-data"
   type        = string
   description = "Name of the Postgres volume"
+}
+
+variable "base_image" {
+  default = "ubuntu-24.04"
+  type    = string
+}
+
+variable "metrics_image" {
+  default = "ubuntu-20.04"
+  type    = string
 }
