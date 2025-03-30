@@ -89,3 +89,9 @@ resource "hcloud_server" "staging_worker" {
     type = "staging"
   }
 }
+
+# Was created long ago and is very outdated In order to prevent a major
+# refactor in the application it will be kept as is.
+data "hcloud_server" "metrics" {
+  name = "metrics"
+}

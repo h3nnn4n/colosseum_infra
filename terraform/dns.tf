@@ -49,3 +49,11 @@ resource "aws_route53_record" "staging" {
   ttl     = 300
   records = [hcloud_server.staging_worker[0].ipv4_address]
 }
+
+resource "aws_route53_record" "metrics" {
+  zone_id = data.aws_route53_zone.colosseum_website.zone_id
+  name    = "metrics.colosseum.website"
+  type    = "A"
+  ttl     = 300
+  records = [data.hcloud_server.metrics.ipv4_address]
+}
