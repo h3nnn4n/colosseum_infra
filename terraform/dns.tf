@@ -31,7 +31,7 @@ resource "aws_route53_record" "celery" {
   name    = "celery.colosseum.website"
   type    = "A"
   ttl     = 300
-  records = [hcloud_server.postgres.ipv4_address]
+  records = [hcloud_server.celery-worker[0].ipv4_address]
 }
 
 resource "aws_route53_record" "worker" {
@@ -39,7 +39,7 @@ resource "aws_route53_record" "worker" {
   name    = "worker.colosseum.website"
   type    = "A"
   ttl     = 300
-  records = [hcloud_server.postgres.ipv4_address]
+  records = [hcloud_server.colosseum-worker[0].ipv4_address]
 }
 
 resource "aws_route53_record" "staging" {
