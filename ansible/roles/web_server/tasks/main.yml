@@ -19,7 +19,7 @@
     command: "{{ install_folder }}/pyenv/shims/python3 -m ensurepip"
 
   - name: Ensure poetry is available
-    command: "{{ install_folder }}/pyenv/shims/python3 -m pip install poetry"
+    command: "{{ install_folder }}/pyenv/shims/python3 -m pip install poetry==2.1.1"
     args:
       chdir: "{{ install_folder }}/colosseum_website"
 
