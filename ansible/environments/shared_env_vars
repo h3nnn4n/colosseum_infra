@@ -1,2 +1,4 @@
 install_folder: /opt/colosseum
 python_version: 3.10.4
+
+enable_automated_seasons: true

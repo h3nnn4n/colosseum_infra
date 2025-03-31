@@ -19,12 +19,17 @@
     command: "{{ install_folder }}/pyenv/shims/python3 -m ensurepip"
 
   - name: Ensure poetry is available
-    command: "{{ install_folder }}/pyenv/shims/python3 -m pip install poetry"
+    command: "{{ install_folder }}/pyenv/shims/python3 -m pip install poetry==2.1.1"
     args:
       chdir: "{{ install_folder }}/colosseum_website"
 
   - name: Install project deps with Poetry
     command: "{{ install_folder }}/pyenv/shims/python3 -m poetry install"
+    args:
+      chdir: "{{ install_folder }}/colosseum_website"
+
+  - name: Upgrade setuptools
+    command: "{{ install_folder }}/pyenv/shims/python3 -m poetry run pip install setuptools"
     args:
       chdir: "{{ install_folder }}/colosseum_website"
 
@@ -52,28 +57,29 @@
       executable: /bin/bash
       chdir: "{{ install_folder }}/colosseum_website"
 
-  - name: Stop gunicorn
-    command: |
-      pkill --full gunicorn
-    ignore_errors: true
+  - name: Create systemd service file for gunicorn
+    template:
+      src: gunicorn.service
+      dest: /etc/systemd/system/gunicorn.service
+      owner: root
+      group: root
+      mode: '0644'
+    become: true
+    become_user: root
 
-  - name: Ensure Gunicorn is running
-    shell: |
-      DJANGO_SETTINGS_MODULE=colosseum_website.settings.{{ environment_name }} \
-      {{ install_folder }}/pyenv/shims/python3 -m poetry run gunicorn \
-        colosseum_website.wsgi \
-        --bind=unix:{{ install_folder }}/colosseum_website/gunicorn.sock \
-        --keep-alive 10 \
-        --access-logfile access.log \
-        --log-level info \
-        --log-file server.log \
-        --preload \
-        --timeout 30 \
-        --worker-class sync \
-        --workers {{ gunicorn_worker_count | default('2') }} > stuff.log &
-    args:
-      executable: /bin/bash
-      chdir: "{{ install_folder }}/colosseum_website"
+  - name: Reload systemd
+    systemd:
+      daemon_reload: yes
+    become: true
+    become_user: root
+
+  - name: Enable and start gunicorn service
+    systemd:
+      name: gunicorn
+      enabled: yes
+      state: restarted
+    become: true
+    become_user: root
 
   become: yes
   become_method: su

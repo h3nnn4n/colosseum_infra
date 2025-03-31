@@ -1,0 +1,16 @@
+[Unit]
+Description=Celery Service
+After=network.target redis.service
+
+[Service]
+Type=simple
+User=devops
+Group=devops
+WorkingDirectory={{ install_folder }}/colosseum_website
+ExecStart={{ install_folder }}/pyenv/shims/python3 -m poetry run celery --app app worker --loglevel=INFO --beat
+Restart=on-failure
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

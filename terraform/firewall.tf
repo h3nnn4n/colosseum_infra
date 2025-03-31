@@ -106,3 +106,33 @@ resource "hcloud_firewall" "postgres" {
     ]
   }
 }
+
+# https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall
+resource "hcloud_firewall" "influxdb" {
+  name = "influxdb"
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "8086"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+}
+
+# https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall
+resource "hcloud_firewall" "metrics" {
+  name = "metrics"
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "9100"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+}

@@ -11,11 +11,8 @@ resource "hcloud_server" "colosseum-worker" {
     hcloud_firewall.node_exporter.id
   ]
 
-  ssh_keys    = [
-    data.hcloud_ssh_key.personal_laptop.id,
-    data.hcloud_ssh_key.personal_desktop.id,
-    data.hcloud_ssh_key.key_1.id,
-    data.hcloud_ssh_key.key_2.id
+  ssh_keys = [
+    data.hcloud_ssh_key.hekatoncheires.id,
   ]
 
   labels = {
@@ -36,11 +33,8 @@ resource "hcloud_server" "celery-worker" {
     hcloud_firewall.node_exporter.id
   ]
 
-  ssh_keys    = [
-    data.hcloud_ssh_key.personal_laptop.id,
-    data.hcloud_ssh_key.personal_desktop.id,
-    data.hcloud_ssh_key.key_1.id,
-    data.hcloud_ssh_key.key_2.id
+  ssh_keys = [
+    data.hcloud_ssh_key.hekatoncheires.id,
   ]
 
   labels = {
@@ -63,14 +57,63 @@ resource "hcloud_server" "web-worker" {
     hcloud_firewall.nginx_exporter.id
   ]
 
-  ssh_keys    = [
-    data.hcloud_ssh_key.personal_laptop.id,
-    data.hcloud_ssh_key.personal_desktop.id,
-    data.hcloud_ssh_key.key_1.id,
-    data.hcloud_ssh_key.key_2.id
+  ssh_keys = [
+    data.hcloud_ssh_key.hekatoncheires.id,
   ]
 
   labels = {
     type = "web-worker"
+  }
+}
+
+# https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server
+resource "hcloud_server" "staging_worker" {
+  count       = var.staging_count
+  name        = "staging-${count.index}"
+  image       = var.base_image
+  server_type = var.staging_type
+  location    = "ash"
+
+  firewall_ids = [
+    hcloud_firewall.ssh_and_ping.id,
+    hcloud_firewall.http_and_https.id,
+    hcloud_firewall.node_exporter.id,
+    hcloud_firewall.nginx_exporter.id
+  ]
+
+  ssh_keys = [
+    data.hcloud_ssh_key.hekatoncheires.id,
+  ]
+
+  labels = {
+    type = "staging"
+  }
+}
+
+resource "hcloud_server" "metrics" {
+  name        = "metrics"
+  image       = var.metrics_image
+  server_type = var.metrics_type
+  location    = "ash"
+
+  firewall_ids = [
+    hcloud_firewall.ssh_and_ping.id,
+    hcloud_firewall.influxdb.id,
+  ]
+
+  ssh_keys = [
+    data.hcloud_ssh_key.hekatoncheires.id,
+  ]
+
+  labels = {
+    type = "metrics"
+  }
+
+  # The server is old and had old ssh keys which were lost. We don't want to
+  # recreate the server just to update the ssh keys. It was manually updated.
+  lifecycle {
+    ignore_changes = [
+      ssh_keys,
+    ]
   }
 }
