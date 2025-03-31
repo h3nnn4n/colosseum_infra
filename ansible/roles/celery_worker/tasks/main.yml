@@ -32,16 +32,29 @@
       group: devops
       mode: '0400'  # Read only to owner
 
-  - name: Stop celery
-    command: |
-      pkill --full celery
-    ignore_errors: true
+  - name: Create systemd service file for celery
+    template:
+      src: celery.service
+      dest: /etc/systemd/system/celery.service
+      owner: devops
+      group: devops
+      mode: '0644'
+    become: true
+    become_user: root
 
-  - name: Start celery
-    command: |
-      {{ install_folder }}/pyenv/shims/python3 -m poetry run celery --app app worker --loglevel=INFO --logfile=celery.log --beat --detach
-    args:
-      chdir: "{{ install_folder }}/colosseum_website"
+  - name: Reload systemd
+    systemd:
+      daemon_reload: yes
+    become: true
+    become_user: root
+
+  - name: Enable and start celery service
+    systemd:
+      name: celery
+      enabled: yes
+      state: restarted
+    become: true
+    become_user: root
 
   become: true
   become_method: su
